@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>AI Smart Agriculture - Dashboard</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar" id="mainNav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-text">Agri<span class="highlight">AI</span></span>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul class="nav-links">
+                    <li class="active"><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="farm-management.html"><i class="fas fa-tractor"></i> Farm Management</a></li>
+                    <li><a href="crop-analysis.html"><i class="fas fa-leaf"></i> Crop Analysis</a></li>
+                    <li><a href="weather.html"><i class="fas fa-cloud-sun"></i> Weather</a></li>
+                    <li><a href="soil-irrigation.html"><i class="fas fa-water"></i> Soil & Irrigation</a></li>
+                    <li><a href="pest-disease.html"><i class="fas fa-bug"></i> Pest & Disease</a></li>
+                    <li><a href="market-intelligence.html"><i class="fas fa-chart-line"></i> Market</a></li>
+                    <li><a href="recommendations.html"><i class="fas fa-lightbulb"></i> Recommendations</a></li>
+                </ul>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-icon" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="btn-icon" id="notificationBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge" id="notificationBadge">3</span>
+                </button>
+                <div class="user-profile">
+                    <span class="user-name">Farmer John</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div class="header-left">
+                <h1>Farm Dashboard</h1>
+                <p class="subtitle">Real-time farm intelligence and decision support</p>
+            </div>
+            <div class="header-right">
+                <span class="last-updated"><i class="fas fa-clock"></i> Updated: <span id="lastUpdateTime">Just now</span></span>
+                <button class="btn-primary" id="refreshDataBtn"><i class="fas fa-sync-alt"></i> Refresh All</button>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon crop"><i class="fas fa-seedling"></i></div>
+                    <div class="stat-info">
+                        <h3>Active Fields</h3>
+                        <p class="stat-number" id="activeFields">12</p>
+                        <span class="stat-change positive"><i class="fas fa-arrow-up"></i> 2 new this season</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon weather"><i class="fas fa-temperature-high"></i></div>
+                    <div class="stat-info">
+                        <h3>Current Weather</h3>
+                        <p class="stat-number" id="currentTemp">26°C</p>
+                        <span class="stat-change" id="weatherCondition">Partly Cloudy</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon risk"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-info">
+                        <h3>Risk Level</h3>
+                        <p class="stat-number risk-level" id="riskLevel">Moderate</p>
+                        <span class="stat-change warning"><i class="fas fa-clock"></i> Pest risk increasing</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon market"><i class="fas fa-dollar-sign"></i></div>
+                    <div class="stat-info">
+                        <h3>Market Price</h3>
+                        <p class="stat-number" id="marketPrice">$4.25</p>
+                        <span class="stat-change positive"><i class="fas fa-arrow-up"></i> +3.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widgets-grid">
+                <div class="widget widget-large">
+                    <div class="widget-header">
+                        <h2><i class="fas fa-map-marked-alt"></i> Field Overview</h2>
+                        <button class="btn-text" onclick="window.location.href='farm-management.html'">View All <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                    <div class="widget-body" id="fieldOverview">
+                        <div class="field-list" id="fieldList"></div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <h2><i class="fas fa-cloud-sun"></i> 7-Day Forecast</h2>
+                        <button class="btn-text" onclick="window.location.href='weather.html'">Details</button>
+                    </div>
+                    <div class="widget-body" id="weatherForecast"></div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <h2><i class="fas fa-heartbeat"></i> Crop Health</h2>
+                        <span class="badge-status healthy">Healthy</span>
+                    </div>
+                    <div class="widget-body">
+                        <div class="health-metrics">
+                            <div class="metric">
+                                <span class="metric-label">NDVI</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 78%"></div></div>
+                                <span class="metric-value">0.78</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Canopy Temperature</span>
+                                <div class="progress-bar"><div class="progress-fill warning" style="width: 65%"></div></div>
+                                <span class="metric-value">24.5°C</span>
+                            </div>
+                            <div class="metric">
+                                <span class="metric-label">Soil Moisture</span>
+                                <div class="progress-bar"><div class="progress-fill" style="width: 72%"></div></div>
+                                <span class="metric-value">72%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget widget-large">
+                    <div class="widget-header">
+                        <h2><i class="fas fa-lightbulb"></i> Smart Recommendations</h2>
+                        <button class="btn-primary" onclick="window.location.href='recommendations.html'">View All</button>
+                    </div>
+                    <div class="widget-body" id="recommendationList"></div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <h2><i class="fas fa-chart-line"></i> Market Trends</h2>
+                        <span class="trend-indicator positive">Bullish</span>
+                    </div>
+                    <div class="widget-body">
+                        <canvas id="marketChart" height="150"></canvas>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                    </div>
+                    <div class="widget-body">
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="window.location.href='crop-analysis.html'"><i class="fas fa-camera"></i><span>Analyze Crop</span></button>
+                            <button class="action-btn" onclick="window.location.href='weather.html'"><i class="fas fa-cloud-rain"></i><span>Check Weather</span></button>
+                            <button class="action-btn" onclick="window.location.href='pest-disease.html'"><i class="fas fa-search"></i><span>Scout Pests</span></button>
+                            <button class="action-btn" onclick="window.location.href='market-intelligence.html'"><i class="fas fa-chart-bar"></i><span>Market Prices</span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 AI Smart Agriculture Decision Agent. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notificationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Notifications</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="notificationList"></div>
+        </div>
+    </div>
+
+    <script src="js/vendor/chart.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils/data-validators.js"></script>
+    <script src="js/utils/formatters.js"></script>
+    <script src="js/api/weather-api.js"></script>
+    <script src="js/api/market-api.js"></script>
+    <script src="js/api/recommendation-api.js"></script>
+    <script src="js/agents/orchestrator-agent.js?v=3"></script>
+    <script src="js/agents/crop-agent.js"></script>
+    <script src="js/agents/weather-agent.js"></script>
+    <script src="js/agents/soil-agent.js"></script>
+    <script src="js/agents/pest-agent.js"></script>
+    <script src="js/agents/market-agent.js"></script>
+    <script src="js/agents/explanation-agent.js"></script>
+    <script src="js/pages/dashboard.js?v=3"></script>
+    <script src="js/main.js?v=3"></script>
+    <script>
+        if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+    </script>
+</body>
+</html>

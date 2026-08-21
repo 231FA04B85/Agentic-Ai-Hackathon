@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Management - AI Agriculture</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation (same as index.html) -->
+    <nav class="navbar">...</nav>
+
+    <main class="main-content">
+        <div class="page-header">
+            <div class="header-left">
+                <h1><i class="fas fa-tractor"></i> Farm Management</h1>
+                <p class="subtitle">Manage your fields and crop profiles</p>
+            </div>
+            <div class="header-right">
+                <button class="btn-primary" id="addFieldBtn">
+                    <i class="fas fa-plus"></i> Add Field
+                </button>
+            </div>
+        </div>
+
+        <div class="farm-management-container">
+            <!-- Field Cards Grid -->
+            <div class="field-cards-grid" id="fieldCardsGrid">
+                <!-- Dynamically populated -->
+            </div>
+
+            <!-- Add Field Modal -->
+            <div id="addFieldModal" class="modal">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <h2>Add New Field</h2>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addFieldForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Field Name *</label>
+                                    <input type="text" id="fieldName" required placeholder="e.g., North Field">
+                                </div>
+                                <div class="form-group">
+                                    <label>Crop Type *</label>
+                                    <select id="cropType" required>
+                                        <option value="">Select Crop</option>
+                                        <option value="Wheat">Wheat</option>
+                                        <option value="Corn">Corn</option>
+                                        <option value="Soybean">Soybean</option>
+                                        <option value="Tomato">Tomato</option>
+                                        <option value="Potato">Potato</option>
+                                        <option value="Rice">Rice</option>
+                                        <option value="Cotton">Cotton</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Variety</label>
+                                    <input type="text" id="variety" placeholder="e.g., Pioneer 34R07">
+                                </div>
+                                <div class="form-group">
+                                    <label>Planting Date *</label>
+                                    <input type="date" id="plantingDate" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Area (hectares) *</label>
+                                    <input type="number" id="area" required min="0.1" step="0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Soil Type</label>
+                                    <select id="soilType">
+                                        <option value="Loam">Loam</option>
+                                        <option value="Sandy">Sandy</option>
+                                        <option value="Clay">Clay</option>
+                                        <option value="Silt">Silt</option>
+                                        <option value="Peat">Peat</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Irrigation Type</label>
+                                    <select id="irrigationType">
+                                        <option value="Drip">Drip</option>
+                                        <option value="Sprinkler">Sprinkler</option>
+                                        <option value="Flood">Flood</option>
+                                        <option value="Furrow">Furrow</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Notes</label>
+                                    <textarea id="fieldNotes" rows="3" placeholder="Additional field information..."></textarea>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" onclick="closeModal('addFieldModal')">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Field</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Field Details Modal -->
+            <div id="fieldDetailModal" class="modal">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <h2 id="detailFieldName">Field Details</h2>
+                        <button class="close-modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="fieldDetailContent">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">...</footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils/data-validators.js"></script>
+    <script src="js/utils/formatters.js"></script>
+    <script src="js/components/modals.js"></script>
+    <script src="js/components/data-table.js"></script>
+    <script src="js/models/field-model.js"></script>
+    <script src="js/pages/farm-management.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
