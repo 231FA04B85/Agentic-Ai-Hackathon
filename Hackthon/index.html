@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>AI Smart Agriculture — Dashboard</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ─── Sidebar overlay (mobile) ─── -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ─── Sidebar ─── -->
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <span class="brand-text">Agri<span class="highlight">AI</span></span>
+    </div>
+
+    <div class="sidebar-farm-info">
+        <div class="farm-avatar"><i class="fas fa-tractor"></i></div>
+        <div class="farm-meta">
+            <div class="farm-name">Green Valley Farm</div>
+            <div class="farm-sub">95 ha · 3 active fields</div>
+        </div>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="nav-section-label">Main</div>
+        <ul class="nav-links">
+            <li class="active"><a href="index.html"><i class="fas fa-home"></i>Dashboard</a></li>
+            <li><a href="farm-management.html"><i class="fas fa-tractor"></i>Farm Management</a></li>
+            <li><a href="crop-analysis.html"><i class="fas fa-leaf"></i>Crop Analysis</a></li>
+        </ul>
+        <div class="nav-section-label">Intelligence</div>
+        <ul class="nav-links">
+            <li><a href="weather.html"><i class="fas fa-cloud-sun"></i>Weather</a></li>
+            <li><a href="soil-irrigation.html"><i class="fas fa-water"></i>Soil &amp; Irrigation</a></li>
+            <li><a href="pest-disease.html"><i class="fas fa-bug"></i>Pest &amp; Disease <span class="nav-badge" id="pestBadge">!</span></a></li>
+            <li><a href="market-intelligence.html"><i class="fas fa-chart-line"></i>Market Intel</a></li>
+        </ul>
+        <div class="nav-section-label">Decisions</div>
+        <ul class="nav-links">
+            <li><a href="recommendations.html"><i class="fas fa-lightbulb"></i>Recommendations <span class="nav-badge" id="recNavBadge">3</span></a></li>
+            <li><a href="explainability.html"><i class="fas fa-brain"></i>Explainability</a></li>
+            <li><a href="farmer-feedback.html"><i class="fas fa-comments"></i>Feedback</a></li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <button class="btn-icon" id="themeToggle" title="Toggle theme"><i class="fas fa-moon"></i></button>
+        <div style="flex:1"></div>
+        <div style="font-size:10px;color:rgba(255,255,255,0.35)">v2.0 Advanced</div>
+    </div>
+</aside>
+
+<!-- ─── Top Bar ─── -->
+<header class="topbar" id="topbar">
+    <div class="topbar-left">
+        <button class="topbar-mobile-toggle" id="mobileToggle"><i class="fas fa-bars"></i></button>
+        <div>
+            <h1>Farm Dashboard</h1>
+            <p>Real-time farm intelligence &amp; AI decision support</p>
+        </div>
+    </div>
+    <div class="topbar-right">
+        <div class="topbar-time"><i class="fas fa-clock"></i><span id="liveTime">--:--:--</span></div>
+        <div style="position:relative">
+            <button class="btn-icon" id="notificationBtn" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span class="badge" id="notificationBadge">3</span>
+            </button>
+            <!-- Notification Dropdown -->
+            <div class="notification-panel" id="notificationPanel">
+                <div class="notification-panel-header">
+                    <span>Notifications</span>
+                    <button style="background:none;border:none;font-size:12px;color:var(--primary-green);cursor:pointer" id="markAllRead">Mark all read</button>
+                </div>
+                <div class="notification-list" id="notificationList"></div>
+                <div style="padding:12px 20px;text-align:center;border-top:1px solid var(--gray-200)">
+                    <a href="recommendations.html" style="font-size:var(--font-size-xs);color:var(--primary-green);font-weight:600">View all recommendations →</a>
+                </div>
+            </div>
+        </div>
+        <button class="btn-secondary" id="refreshDataBtn" style="padding:7px 14px;font-size:13px">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+        <div class="user-chip">
+            <div class="user-avatar">FJ</div>
+            <span class="user-name">Farmer John</span>
+        </div>
+    </div>
+</header>
+
+<!-- ─── Alert Ticker ─── -->
+<div class="main-content" style="padding-top:0">
+    <div class="alert-ticker" id="alertTicker" style="margin:0 0 20px;border-radius:var(--radius-md);display:none">
+        <i class="fas fa-exclamation-triangle ticker-icon"></i>
+        <span class="ticker-text" id="tickerText"></span>
+        <button class="ticker-close" id="tickerClose"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- ─── Page Header ─── -->
+    <div class="page-header" style="padding-top:20px">
+        <div class="header-left">
+            <h1 style="display:flex;align-items:center;gap:10px">
+                <span class="live-dot">LIVE</span>
+                Farm Intelligence Dashboard
+            </h1>
+            <p class="subtitle">All 6 AI agents active · Last updated: <span id="lastUpdateTime">Just now</span></p>
+        </div>
+        <div class="header-right">
+            <a href="recommendations.html" class="btn-primary"><i class="fas fa-lightbulb"></i> View Recommendations</a>
+            <a href="explainability.html" class="btn-secondary"><i class="fas fa-brain"></i> How AI Decides</a>
+        </div>
+    </div>
+
+    <!-- ─── KPI Cards ─── -->
+    <div class="kpi-grid stagger animate-fade-in" id="kpiGrid">
+        <div class="kpi-card kpi-green card-animate">
+            <div class="kpi-icon"><i class="fas fa-seedling"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Active Fields</div>
+                <div class="kpi-value" id="kpiFields">3</div>
+                <div class="kpi-change up"><i class="fas fa-arrow-up"></i> 95 ha total</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-blue card-animate">
+            <div class="kpi-icon"><i class="fas fa-thermometer-half"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Temperature</div>
+                <div class="kpi-value" id="kpiTemp">—</div>
+                <div class="kpi-change flat" id="kpiCondition">Loading…</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-green card-animate">
+            <div class="kpi-icon"><i class="fas fa-heartbeat"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Avg Crop Health</div>
+                <div class="kpi-value" id="kpiHealth">—</div>
+                <div class="kpi-change" id="kpiHealthChange">Calculating…</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-amber card-animate">
+            <div class="kpi-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Risk Level</div>
+                <div class="kpi-value" id="kpiRisk">—</div>
+                <div class="kpi-change" id="kpiRiskSub">Checking…</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-purple card-animate">
+            <div class="kpi-icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Wheat Price</div>
+                <div class="kpi-value" id="kpiPrice">—</div>
+                <div class="kpi-change" id="kpiPriceChange">Loading…</div>
+            </div>
+        </div>
+        <div class="kpi-card kpi-teal card-animate">
+            <div class="kpi-icon"><i class="fas fa-tint"></i></div>
+            <div class="kpi-body">
+                <div class="kpi-label">Soil Moisture</div>
+                <div class="kpi-value" id="kpiMoisture">—</div>
+                <div class="kpi-change" id="kpiMoistureSub">Sensors reading…</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ─── AI Pipeline Status ─── -->
+    <div class="ai-pipeline animate-fade-in" id="aiPipeline">
+        <div class="ai-pipeline-title"><i class="fas fa-robot" style="margin-right:6px"></i>AI Pipeline</div>
+        <div class="pipeline-steps" id="pipelineSteps">
+            <div class="pipeline-step done" data-agent="crop"><div class="pipeline-node"><i class="fas fa-check"></i></div><div class="pipeline-label">Crop Agent</div></div>
+            <div class="pipeline-step done" data-agent="weather"><div class="pipeline-node"><i class="fas fa-check"></i></div><div class="pipeline-label">Weather Agent</div></div>
+            <div class="pipeline-step done" data-agent="soil"><div class="pipeline-node"><i class="fas fa-check"></i></div><div class="pipeline-label">Soil Agent</div></div>
+            <div class="pipeline-step active" data-agent="pest"><div class="pipeline-node"><i class="fas fa-spinner fa-spin" style="font-size:8px"></i></div><div class="pipeline-label">Pest Agent</div></div>
+            <div class="pipeline-step" data-agent="market"><div class="pipeline-node"></div><div class="pipeline-label">Market Agent</div></div>
+            <div class="pipeline-step" data-agent="orchestrator"><div class="pipeline-node"></div><div class="pipeline-label">Orchestrator</div></div>
+            <div class="pipeline-step" data-agent="xai"><div class="pipeline-node"></div><div class="pipeline-label">XAI Engine</div></div>
+        </div>
+        <div style="margin-left:auto;flex-shrink:0;font-size:11px;color:var(--text-secondary);padding-left:20px" id="pipelineStatus">Running assessment…</div>
+    </div>
+
+    <!-- ─── Main Widget Grid ─── -->
+    <div class="dashboard-main" id="dashboardMain">
+
+        <!-- Field Overview (span 2) -->
+        <div class="widget span-2 card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-map-marked-alt"></i>Field Overview</h3>
+                <a href="farm-management.html" class="btn-text">View All <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="widget-body" style="padding-bottom:8px">
+                <div class="field-list" id="fieldList"></div>
+            </div>
+            <div class="widget-footer">
+                <span><i class="fas fa-seedling" style="color:var(--primary-green)"></i> <span id="footerFieldCount">3</span> fields monitored</span>
+                <span id="footerTotalArea">95 ha total</span>
+            </div>
+        </div>
+
+        <!-- Weather Widget -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-cloud-sun"></i>Weather</h3>
+                <a href="weather.html" class="btn-text">Details</a>
+            </div>
+            <div class="widget-body">
+                <div style="text-align:center;margin-bottom:14px">
+                    <div style="font-size:48px;font-weight:800;color:var(--secondary-blue);line-height:1" id="heroTemp">—</div>
+                    <div style="font-size:13px;color:var(--text-secondary);margin-top:4px" id="heroCondition">—</div>
+                    <div style="font-size:12px;color:var(--text-hint)" id="heroFeels"></div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px" id="weatherMiniStats"></div>
+                <div class="forecast-row" id="forecastRow"></div>
+            </div>
+        </div>
+
+        <!-- Smart Recommendations (span 2) -->
+        <div class="widget span-2 card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-lightbulb"></i>Smart Recommendations</h3>
+                <a href="recommendations.html" class="btn-primary" style="font-size:12px;padding:5px 12px">View All <span class="badge-pill info" id="recCountBadge" style="margin-left:4px">0</span></a>
+            </div>
+            <div class="widget-body">
+                <div class="rec-list" id="recommendationList"></div>
+            </div>
+        </div>
+
+        <!-- Crop Health Trends chart -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-heartbeat"></i>Crop Health</h3>
+                <span class="badge-pill healthy" id="healthBadge">Good</span>
+            </div>
+            <div class="widget-body">
+                <div class="health-metrics" style="margin-bottom:12px" id="healthMetrics"></div>
+                <div class="chart-wrap chart-h-160">
+                    <canvas id="healthChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Prices chart -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-chart-line"></i>Market Prices</h3>
+                <span class="trend-indicator" id="marketTrendBadge" style="font-size:12px;font-weight:600;color:var(--success-green)">Bullish ▲</span>
+            </div>
+            <div class="widget-body">
+                <div class="market-stats" id="marketMiniStats"></div>
+                <div class="chart-wrap chart-h-160">
+                    <canvas id="marketChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Soil & Moisture chart -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-water"></i>Soil &amp; Moisture</h3>
+                <a href="soil-irrigation.html" class="btn-text">Details</a>
+            </div>
+            <div class="widget-body">
+                <div class="soil-mini-grid" id="soilMiniGrid"></div>
+                <div class="chart-wrap chart-h-160" style="margin-top:12px">
+                    <canvas id="soilChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pest & Disease Risk -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-bug"></i>Pest &amp; Disease Risk</h3>
+                <a href="pest-disease.html" class="btn-text">Scout</a>
+            </div>
+            <div class="widget-body">
+                <div id="pestRiskDisplay"></div>
+                <div class="chart-wrap chart-h-160" style="margin-top:12px">
+                    <canvas id="pestChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weather Precipitation chart -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-cloud-rain"></i>7-Day Precipitation</h3>
+                <a href="weather.html" class="btn-text">Forecast</a>
+            </div>
+            <div class="widget-body">
+                <div class="chart-wrap chart-h-200">
+                    <canvas id="precipChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions + Activity Feed -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-bolt"></i>Quick Actions</h3>
+            </div>
+            <div class="widget-body">
+                <div class="quick-actions" id="quickActions">
+                    <button class="action-btn" onclick="location.href='crop-analysis.html'"><i class="fas fa-camera" style="color:var(--primary-green)"></i><span>Analyze Crop</span></button>
+                    <button class="action-btn" onclick="location.href='weather.html'"><i class="fas fa-cloud-rain" style="color:var(--secondary-blue)"></i><span>Check Weather</span></button>
+                    <button class="action-btn" onclick="location.href='pest-disease.html'"><i class="fas fa-search" style="color:var(--danger-red)"></i><span>Scout Pests</span></button>
+                    <button class="action-btn" onclick="location.href='market-intelligence.html'"><i class="fas fa-chart-bar" style="color:var(--warning-amber)"></i><span>Market Prices</span></button>
+                    <button class="action-btn" onclick="location.href='soil-irrigation.html'"><i class="fas fa-tint" style="color:#0277BD"></i><span>Irrigation</span></button>
+                    <button class="action-btn" onclick="location.href='recommendations.html'"><i class="fas fa-lightbulb" style="color:#7B1FA2"></i><span>All Recs</span></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Alert Feed (span 2) -->
+        <div class="widget span-2 card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-exclamation-circle"></i>Live Alerts &amp; Activity</h3>
+                <span class="live-dot">Live</span>
+            </div>
+            <div class="widget-body">
+                <div class="alert-feed" id="alertFeed"></div>
+            </div>
+        </div>
+
+        <!-- Crop Distribution donut -->
+        <div class="widget card-animate animate-fade-in">
+            <div class="widget-header">
+                <h3><i class="fas fa-chart-pie"></i>Crop Distribution</h3>
+            </div>
+            <div class="widget-body">
+                <div class="chart-wrap chart-h-200">
+                    <canvas id="distributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /dashboard-main -->
+
+</div><!-- /main-content -->
+
+<!-- ─── Footer ─── -->
+<footer class="footer">
+    <span>&copy; 2026 AI Smart Agriculture Decision Agent &nbsp;·&nbsp; v2.0 Advanced</span>
+    <div class="footer-links">
+        <a href="explainability.html">How AI Decides</a>
+        <a href="recommendations.html">Recommendations</a>
+        <a href="farmer-feedback.html">Feedback</a>
+    </div>
+</footer>
+
+<!-- ─── Toast Container ─── -->
+<div id="toast-container"></div>
+
+<!-- ─── Scripts ─── -->
+<script src="js/vendor/chart.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils/formatters.js"></script>
+<script src="js/agents/orchestrator-agent.js?v=3"></script>
+<script src="js/agents/crop-agent.js"></script>
+<script src="js/agents/weather-agent.js"></script>
+<script src="js/agents/soil-agent.js"></script>
+<script src="js/agents/pest-agent.js"></script>
+<script src="js/agents/market-agent.js"></script>
+<script src="js/agents/explanation-agent.js"></script>
+<script src="js/pages/dashboard.js"></script>
+<script src="js/main.js"></script>
+<script>
+(function() {
+    // Theme
+    const t = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', t);
+    const ti = document.querySelector('#themeToggle i');
+    if (ti) ti.className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        document.querySelector('#themeToggle i').className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+
+    // Mobile sidebar
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    document.getElementById('mobileToggle').addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+    });
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+    });
+
+    // Notification dropdown
+    const notifBtn = document.getElementById('notificationBtn');
+    const notifPanel = document.getElementById('notificationPanel');
+    notifBtn.addEventListener('click', (e) => { e.stopPropagation(); notifPanel.classList.toggle('active'); });
+    document.addEventListener('click', () => notifPanel.classList.remove('active'));
+    notifPanel.addEventListener('click', e => e.stopPropagation());
+
+    document.getElementById('markAllRead').addEventListener('click', () => {
+        document.getElementById('notificationBadge').textContent = '';
+        document.querySelectorAll('.notification-item.unread').forEach(el => el.classList.remove('unread'));
+    });
+
+    // Alert ticker close
+    document.getElementById('tickerClose').addEventListener('click', () => {
+        document.getElementById('alertTicker').style.display = 'none';
+    });
+
+    // Live clock
+    function updateClock() {
+        const el = document.getElementById('liveTime');
+        if (el) el.textContent = new Date().toLocaleTimeString();
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+})();
+</script>
+</body>
+</html>
