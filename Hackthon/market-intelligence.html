@@ -1,2 +1,155 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Market Intelligence | AgriAI</title><link rel="stylesheet" href="css/variables.css"><link rel="stylesheet" href="css/main.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/responsive.css"></head><body><nav class="navbar"><div class="nav-container"><a class="nav-brand" href="index.html"><span class="brand-text">Agri<span class="highlight">AI</span></span></a><a class="btn-primary" href="index.html">Dashboard</a></div></nav><main class="main-content"><div class="page-header"><div><h1>Market Intelligence</h1><p class="subtitle">Commodity prices and market direction.</p></div></div><section class="content-section"><h2>Wheat</h2><p>$4.25 · Bullish · +3.2%</p></section></main></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>Market Intelligence | AgriAI</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .market-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:var(--spacing-md); margin-bottom:var(--spacing-xl); }
+        .commodity-card { background:var(--bg-card); border-radius:var(--radius-lg); padding:var(--spacing-lg); box-shadow:var(--shadow-sm); cursor:pointer; border:2px solid transparent; transition:all var(--transition-fast); }
+        .commodity-card:hover,.commodity-card.active { border-color:var(--primary-green); box-shadow:var(--shadow-md); }
+        .commodity-name { font-weight:700; font-size:var(--font-size-base); margin-bottom:var(--spacing-xs); }
+        .commodity-price { font-size:var(--font-size-2xl); font-weight:800; color:var(--primary-green); }
+        .commodity-unit { font-size:var(--font-size-xs); color:var(--text-secondary); }
+        .commodity-change { display:flex; align-items:center; gap:4px; font-size:var(--font-size-sm); font-weight:600; margin-top:var(--spacing-xs); }
+        .commodity-change.up { color:var(--success-green); }
+        .commodity-change.down { color:var(--danger-red); }
+        .commodity-change.flat { color:var(--text-secondary); }
+        .commodity-trend { font-size:var(--font-size-xs); padding:2px var(--spacing-sm); border-radius:var(--radius-full); margin-top:var(--spacing-xs); display:inline-block; }
+        .commodity-trend.bullish { background:#C8E6C9; color:var(--success-green); }
+        .commodity-trend.bearish { background:#FFCDD2; color:var(--danger-red); }
+        .commodity-trend.neutral { background:var(--gray-200); color:var(--text-secondary); }
+        .section-card { background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:var(--spacing-lg); margin-bottom:var(--spacing-lg); }
+        .section-card h2 { font-size:var(--font-size-lg); font-weight:600; margin-bottom:var(--spacing-md); display:flex; align-items:center; gap:var(--spacing-sm); }
+        .detail-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:var(--spacing-md); margin-bottom:var(--spacing-lg); }
+        .detail-item { background:var(--gray-50); border-radius:var(--radius-md); padding:var(--spacing-md); }
+        .detail-label { font-size:var(--font-size-xs); color:var(--text-secondary); margin-bottom:var(--spacing-xs); text-transform:uppercase; letter-spacing:0.05em; }
+        .detail-value { font-size:var(--font-size-xl); font-weight:700; }
+        .detail-sub { font-size:var(--font-size-xs); color:var(--text-secondary); margin-top:2px; }
+        .recommendation-banner { border-radius:var(--radius-md); padding:var(--spacing-md) var(--spacing-lg); display:flex; gap:var(--spacing-md); align-items:center; margin-bottom:var(--spacing-md); }
+        .recommendation-banner.sell { background:#C8E6C9; border-left:4px solid var(--success-green); }
+        .recommendation-banner.hold { background:#FFE0B2; border-left:4px solid var(--warning-amber); }
+        .recommendation-banner.monitor { background:#BBDEFB; border-left:4px solid var(--secondary-blue); }
+        .rec-action { font-size:var(--font-size-2xl); font-weight:800; }
+        .rec-action.sell { color:var(--success-green); }
+        .rec-action.hold { color:var(--warning-amber); }
+        .rec-action.monitor { color:var(--secondary-blue); }
+        .breakeven-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-md); }
+        .cost-row { display:flex; justify-content:space-between; align-items:center; padding:var(--spacing-sm) 0; border-bottom:1px solid var(--gray-200); font-size:var(--font-size-sm); }
+        .cost-row:last-child { border-bottom:none; font-weight:700; }
+        .indicator-row { display:flex; gap:var(--spacing-md); flex-wrap:wrap; margin-top:var(--spacing-md); }
+        .indicator-chip { background:var(--gray-100); border-radius:var(--radius-full); padding:var(--spacing-xs) var(--spacing-md); font-size:var(--font-size-xs); display:flex; align-items:center; gap:4px; }
+        .indicator-chip.positive { background:#C8E6C9; color:var(--success-green); }
+        .indicator-chip.negative { background:#FFCDD2; color:var(--danger-red); }
+        .price-table { width:100%; border-collapse:collapse; font-size:var(--font-size-sm); }
+        .price-table th { text-align:left; padding:var(--spacing-sm); background:var(--gray-100); font-weight:600; border-bottom:2px solid var(--gray-200); }
+        .price-table td { padding:var(--spacing-sm); border-bottom:1px solid var(--gray-200); }
+        .price-table tr:last-child td { border-bottom:none; }
+        .price-table tr:hover td { background:var(--gray-50); }
+        .chart-container { height:240px; }
+        .loading-spinner { display:inline-block; width:28px; height:28px; border:3px solid var(--gray-200); border-top:3px solid var(--primary-green); border-radius:50%; animation:spin 0.8s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+
+<main class="main-content" style="padding-top:0">
+    <div class="page-header">
+        <div class="header-left">
+            <h1><i class="fas fa-chart-line" style="color:var(--primary-green)"></i> Market Intelligence</h1>
+            <p class="subtitle">Commodity prices, forecasts, and sell recommendations</p>
+        </div>
+        <div class="header-right">
+            <span class="last-updated"><i class="fas fa-clock"></i> Updated: <span id="lastUpdateTime">Just now</span></span>
+            <button class="btn-primary" id="refreshMarketBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+            <button class="btn-secondary" id="exportMarketBtn"><i class="fas fa-download"></i> Export</button>
+        </div>
+    </div>
+
+    <!-- Commodity Cards -->
+    <div class="market-grid" id="commodityCards"></div>
+
+    <!-- Detail Panel for Selected Commodity -->
+    <div class="section-card" id="detailPanel">
+        <h2><i class="fas fa-search-dollar"></i> <span id="detailCropName">Wheat</span> — Detailed Analysis</h2>
+
+        <!-- Sell/Hold Recommendation -->
+        <div id="sellRecommendation"></div>
+
+        <!-- Key Metrics -->
+        <div class="detail-grid" id="detailMetrics"></div>
+
+        <!-- Price Chart -->
+        <div class="chart-container"><canvas id="priceChart"></canvas></div>
+
+        <!-- Economic Indicators -->
+        <div id="economicIndicators"></div>
+    </div>
+
+    <!-- Breakeven Analysis -->
+    <div class="section-card">
+        <h2><i class="fas fa-calculator"></i> Breakeven Analysis — <span id="breakevenCrop">Wheat</span></h2>
+        <div class="breakeven-grid">
+            <div id="costBreakdown"></div>
+            <div>
+                <h3 style="font-size:var(--font-size-base);margin-bottom:var(--spacing-md)">Profitability Summary</h3>
+                <div id="profitSummary"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- All Commodity Table -->
+    <div class="section-card">
+        <h2><i class="fas fa-table"></i> Market Overview Table</h2>
+        <div style="overflow-x:auto"><table class="price-table"><thead><tr><th>Commodity</th><th>Current Price</th><th>7-Day Change</th><th>30-Day Avg</th><th>Trend</th><th>Recommendation</th></tr></thead><tbody id="marketTable"></tbody></table></div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; 2026 AI Smart Agriculture Decision Agent.</p>
+        <div class="footer-links">
+            <a href="recommendations.html">Recommendations</a>
+            <a href="farmer-feedback.html">Feedback</a>
+        </div>
+    </div>
+</footer>
+
+
+<script src="js/components/navigation.js"></script>
+    <script src="js/vendor/chart.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils/formatters.js"></script>
+<script src="js/agents/orchestrator-agent.js?v=3"></script>
+<script src="js/agents/crop-agent.js"></script>
+<script src="js/agents/weather-agent.js"></script>
+<script src="js/agents/soil-agent.js"></script>
+<script src="js/agents/pest-agent.js"></script>
+<script src="js/agents/market-agent.js"></script>
+<script src="js/agents/explanation-agent.js"></script>
+<script src="js/pages/market-intelligence.js"></script>
+<script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem('theme', t);
+        document.querySelector('#themeToggle i').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+    document.querySelector('#themeToggle i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    document.getElementById('notificationBtn').addEventListener('click', () => document.getElementById('notificationModal').classList.toggle('active'));
+    document.querySelector('.close-modal').addEventListener('click', () => document.getElementById('notificationModal').classList.remove('active'));
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+</script>
+</body>
+</html>

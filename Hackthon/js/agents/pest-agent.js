@@ -605,3 +605,8 @@ class PestAgent {
 }
 
 window.PestAgent = PestAgent;
+
+// Auto-instantiate so pages can use window.pestAgent directly
+if (typeof window !== 'undefined' && !window.pestAgent) {
+    window.pestAgent = new PestAgent();
+}

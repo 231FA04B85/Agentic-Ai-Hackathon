@@ -554,3 +554,8 @@ class MarketAgent {
 }
 
 window.MarketAgent = MarketAgent;
+
+// Auto-instantiate so pages can use window.marketAgent directly
+if (typeof window !== 'undefined' && !window.marketAgent) {
+    window.marketAgent = new MarketAgent();
+}

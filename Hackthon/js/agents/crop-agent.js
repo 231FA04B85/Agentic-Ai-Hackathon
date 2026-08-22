@@ -621,3 +621,8 @@ class CropAgent {
 }
 
 window.CropAgent = CropAgent;
+
+// Auto-instantiate so pages can use window.cropAgent directly
+if (typeof window !== 'undefined' && !window.cropAgent) {
+    window.cropAgent = new CropAgent();
+}

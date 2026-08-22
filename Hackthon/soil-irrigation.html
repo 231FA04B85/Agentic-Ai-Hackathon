@@ -1,2 +1,220 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Soil & Irrigation | AgriAI</title><link rel="stylesheet" href="css/variables.css"><link rel="stylesheet" href="css/main.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/responsive.css"></head><body><nav class="navbar"><div class="nav-container"><a class="nav-brand" href="index.html"><span class="brand-text">Agri<span class="highlight">AI</span></span></a><a class="btn-primary" href="index.html">Dashboard</a></div></nav><main class="main-content"><div class="page-header"><div><h1>Soil & Irrigation</h1><p class="subtitle">Monitor moisture and nutrient conditions.</p></div></div><section class="content-section"><h2>Soil snapshot</h2><p>Moisture 72% · Loam · Nitrogen 32 ppm</p></section></main><script src="js/config.js"></script><script src="js/api/soil-api.js"></script><script src="js/pages/soil-irrigation.js"></script></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>Soil & Irrigation | AgriAI</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .soil-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:var(--spacing-md); margin-bottom:var(--spacing-xl); }
+        .soil-stat { background:var(--bg-card); border-radius:var(--radius-lg); padding:var(--spacing-md) var(--spacing-lg); box-shadow:var(--shadow-sm); text-align:center; }
+        .soil-stat-value { font-size:var(--font-size-2xl); font-weight:700; color:var(--primary-green); }
+        .soil-stat-label { font-size:var(--font-size-xs); color:var(--text-secondary); margin-top:4px; }
+        .soil-stat-status { font-size:var(--font-size-xs); margin-top:4px; font-weight:600; }
+        .soil-stat-status.good { color:var(--success-green); }
+        .soil-stat-status.warn { color:var(--warning-amber); }
+        .soil-stat-status.bad { color:var(--danger-red); }
+        .section-card { background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:var(--spacing-lg); margin-bottom:var(--spacing-lg); }
+        .section-card h2 { font-size:var(--font-size-lg); font-weight:600; margin-bottom:var(--spacing-md); display:flex; align-items:center; gap:var(--spacing-sm); }
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-lg); }
+        .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--spacing-lg); }
+        .prop-table { width:100%; }
+        .prop-row { display:flex; justify-content:space-between; align-items:center; padding:var(--spacing-sm) 0; border-bottom:1px solid var(--gray-200); font-size:var(--font-size-sm); }
+        .prop-row:last-child { border-bottom:none; }
+        .prop-label { color:var(--text-secondary); }
+        .prop-value { font-weight:600; }
+        .npk-bar { height:8px; background:var(--gray-200); border-radius:var(--radius-full); overflow:hidden; margin-top:4px; }
+        .npk-fill { height:100%; border-radius:var(--radius-full); }
+        .npk-fill.n { background:#1565C0; }
+        .npk-fill.p { background:#E65100; }
+        .npk-fill.k { background:#7B1FA2; }
+        .irrig-rec-card { border-radius:var(--radius-md); padding:var(--spacing-md) var(--spacing-lg); margin-bottom:var(--spacing-md); display:flex; gap:var(--spacing-md); align-items:flex-start; }
+        .irrig-rec-card.critical { background:#FFCDD2; border-left:4px solid var(--danger-red); }
+        .irrig-rec-card.high { background:#FFE0B2; border-left:4px solid var(--warning-amber); }
+        .irrig-rec-card.medium { background:#FFF9C4; border-left:4px solid #F9A825; }
+        .irrig-rec-card.low { background:#C8E6C9; border-left:4px solid var(--success-green); }
+        .irrig-icon { font-size:var(--font-size-2xl); margin-top:2px; }
+        .irrig-icon.critical { color:var(--danger-red); }
+        .irrig-icon.high { color:var(--warning-amber); }
+        .irrig-icon.medium { color:#F9A825; }
+        .irrig-icon.low { color:var(--success-green); }
+        .schedule-item { display:flex; justify-content:space-between; align-items:center; padding:var(--spacing-md); background:var(--gray-50); border-radius:var(--radius-md); margin-bottom:var(--spacing-sm); }
+        .schedule-type-badge { background:var(--primary-green-lighter); color:var(--primary-green); padding:2px var(--spacing-sm); border-radius:var(--radius-full); font-size:var(--font-size-xs); font-weight:700; }
+        .schedule-details { font-size:var(--font-size-sm); color:var(--text-secondary); }
+        .field-selector { display:flex; gap:var(--spacing-sm); flex-wrap:wrap; margin-bottom:var(--spacing-md); }
+        .field-chip { background:var(--gray-100); border:1px solid var(--gray-300); border-radius:var(--radius-full); padding:var(--spacing-xs) var(--spacing-md); font-size:var(--font-size-sm); cursor:pointer; transition:all var(--transition-fast); }
+        .field-chip.active,.field-chip:hover { background:var(--primary-green); color:#fff; border-color:var(--primary-green); }
+        .chart-container { height:220px; }
+        .soil-health-score { text-align:center; padding:var(--spacing-lg); }
+        .score-circle { width:120px; height:120px; border-radius:50%; background:conic-gradient(var(--primary-green) var(--deg,0deg), var(--gray-200) 0); display:flex; align-items:center; justify-content:center; margin:0 auto var(--spacing-md); position:relative; }
+        .score-inner { width:90px; height:90px; border-radius:50%; background:var(--bg-card); display:flex; flex-direction:column; align-items:center; justify-content:center; }
+        .score-number { font-size:var(--font-size-2xl); font-weight:800; color:var(--primary-green); }
+        .score-label { font-size:var(--font-size-xs); color:var(--text-secondary); }
+        .loading-spinner { display:inline-block; width:28px; height:28px; border:3px solid var(--gray-200); border-top:3px solid var(--primary-green); border-radius:50%; animation:spin 0.8s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @media(max-width:768px){ .two-col,.three-col { grid-template-columns:1fr; } }
+    </style>
+</head>
+<body>
+
+
+<main class="main-content" style="padding-top:0">
+    <div class="page-header">
+        <div class="header-left">
+            <h1><i class="fas fa-water" style="color:var(--secondary-blue)"></i> Soil & Irrigation</h1>
+            <p class="subtitle">Real-time soil health monitoring and smart irrigation scheduling</p>
+        </div>
+        <div class="header-right">
+            <span class="last-updated"><i class="fas fa-clock"></i> Updated: <span id="lastUpdateTime">Just now</span></span>
+            <button class="btn-primary" id="refreshSoilBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+            <button class="btn-secondary" id="exportSoilBtn"><i class="fas fa-download"></i> Export</button>
+        </div>
+    </div>
+
+    <!-- Field Selector -->
+    <div class="field-selector" id="fieldSelector">
+        <span style="font-weight:600;font-size:var(--font-size-sm);line-height:28px">Field:</span>
+        <div class="field-chip active" data-field="field-001">North Field (Wheat)</div>
+        <div class="field-chip" data-field="field-002">South Field (Corn)</div>
+        <div class="field-chip" data-field="field-003">East Field (Tomato)</div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="soil-stats">
+        <div class="soil-stat">
+            <div class="soil-stat-value" id="soilMoisture">—</div>
+            <div class="soil-stat-label"><i class="fas fa-tint" style="color:var(--secondary-blue)"></i> Moisture</div>
+            <div class="soil-stat-status" id="moistureStatus">—</div>
+        </div>
+        <div class="soil-stat">
+            <div class="soil-stat-value" id="soilTemp">—</div>
+            <div class="soil-stat-label"><i class="fas fa-thermometer-half" style="color:var(--warning-amber)"></i> Temperature</div>
+            <div class="soil-stat-status good">Normal</div>
+        </div>
+        <div class="soil-stat">
+            <div class="soil-stat-value" id="soilPH">—</div>
+            <div class="soil-stat-label"><i class="fas fa-flask" style="color:var(--primary-green)"></i> pH Level</div>
+            <div class="soil-stat-status" id="phStatus">—</div>
+        </div>
+        <div class="soil-stat">
+            <div class="soil-stat-value" id="soilEC">—</div>
+            <div class="soil-stat-label"><i class="fas fa-bolt" style="color:var(--warning-amber)"></i> EC (dS/m)</div>
+            <div class="soil-stat-status" id="ecStatus">—</div>
+        </div>
+        <div class="soil-stat">
+            <div class="soil-stat-value" id="soilOrganicMatter">—</div>
+            <div class="soil-stat-label"><i class="fas fa-leaf" style="color:var(--success-green)"></i> Organic Matter</div>
+            <div class="soil-stat-status" id="omStatus">—</div>
+        </div>
+    </div>
+
+    <div class="two-col">
+        <!-- Irrigation Recommendation -->
+        <div class="section-card">
+            <h2><i class="fas fa-hand-holding-water" style="color:var(--secondary-blue)"></i> Irrigation Recommendation</h2>
+            <div id="irrigationRecommendation"><div style="text-align:center;padding:var(--spacing-lg)"><div class="loading-spinner"></div></div></div>
+            <div style="margin-top:var(--spacing-md)">
+                <button class="btn-primary" id="scheduleIrrigationBtn"><i class="fas fa-plus"></i> Schedule Irrigation</button>
+            </div>
+        </div>
+
+        <!-- Soil Health Score -->
+        <div class="section-card" style="text-align:center">
+            <h2 style="justify-content:center"><i class="fas fa-heartbeat" style="color:var(--success-green)"></i> Soil Health Score</h2>
+            <div class="soil-health-score">
+                <div class="score-circle" id="scoreCircle" style="--deg:0deg">
+                    <div class="score-inner">
+                        <div class="score-number" id="healthScore">—</div>
+                        <div class="score-label">/ 100</div>
+                    </div>
+                </div>
+                <div id="healthGrade" style="font-size:var(--font-size-lg);font-weight:700;color:var(--primary-green)">—</div>
+                <p id="healthDescription" style="font-size:var(--font-size-sm);color:var(--text-secondary);margin-top:var(--spacing-sm)">Calculating soil health…</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Soil Properties -->
+    <div class="section-card">
+        <h2><i class="fas fa-microscope" style="color:var(--primary-green)"></i> Soil Properties</h2>
+        <div class="three-col" id="soilDataDisplay">
+            <div style="text-align:center;padding:var(--spacing-lg);grid-column:1/-1"><div class="loading-spinner"></div></div>
+        </div>
+    </div>
+
+    <!-- Moisture Trend Chart -->
+    <div class="section-card">
+        <h2><i class="fas fa-chart-line" style="color:var(--secondary-blue)"></i> 30-Day Moisture & Rainfall Trend</h2>
+        <div class="chart-container"><canvas id="moistureChart"></canvas></div>
+    </div>
+
+    <!-- NPK Status -->
+    <div class="section-card">
+        <h2><i class="fas fa-atom" style="color:var(--primary-green)"></i> Nutrient Status (NPK)</h2>
+        <div id="npkDisplay" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--spacing-md)"></div>
+    </div>
+
+    <!-- Irrigation Schedules -->
+    <div class="section-card">
+        <h2><i class="fas fa-calendar-check" style="color:var(--secondary-blue)"></i> Irrigation Schedules</h2>
+        <div id="irrigationSchedules"></div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; 2026 AI Smart Agriculture Decision Agent.</p>
+        <div class="footer-links">
+            <a href="recommendations.html">Recommendations</a>
+            <a href="farmer-feedback.html">Feedback</a>
+        </div>
+    </div>
+</footer>
+
+
+<script src="js/components/navigation.js"></script>
+    <script src="js/vendor/chart.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils/formatters.js"></script>
+<script src="js/agents/orchestrator-agent.js?v=3"></script>
+<script src="js/agents/crop-agent.js"></script>
+<script src="js/agents/weather-agent.js"></script>
+<script src="js/agents/soil-agent.js"></script>
+<script src="js/agents/pest-agent.js"></script>
+<script src="js/agents/market-agent.js"></script>
+<script src="js/agents/explanation-agent.js"></script>
+<script src="js/pages/soil-irrigation.js"></script>
+<script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem('theme', t);
+        document.querySelector('#themeToggle i').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+    document.querySelector('#themeToggle i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    document.getElementById('notificationBtn').addEventListener('click', () => document.getElementById('notificationModal').classList.toggle('active'));
+    document.querySelector('.close-modal').addEventListener('click', () => document.getElementById('notificationModal').classList.remove('active'));
+    // Field chips
+    document.querySelectorAll('.field-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('.field-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            if (window.soilIrrigation) {
+                window.soilIrrigation.selectedField = chip.dataset.field;
+                window.soilIrrigation.loadSoilData(true);
+            }
+        });
+    });
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+</script>
+</body>
+</html>

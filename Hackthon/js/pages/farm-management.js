@@ -415,10 +415,7 @@ class FarmManagementPage {
     }
 
     async deleteField(fieldId) {
-        const confirmed = await Modal.confirm(
-            'Are you sure you want to delete this field? This action cannot be undone.',
-            { title: 'Delete Field' }
-        );
+        const confirmed = window.confirm('Are you sure you want to delete this field? This action cannot be undone.');
 
         if (confirmed) {
             try {

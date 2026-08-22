@@ -458,3 +458,8 @@ class WeatherAgent {
 }
 
 window.WeatherAgent = WeatherAgent;
+
+// Auto-instantiate so pages can use window.weatherAgent directly
+if (typeof window !== 'undefined' && !window.weatherAgent) {
+    window.weatherAgent = new WeatherAgent();
+}

@@ -619,3 +619,8 @@ class SoilAgent {
 }
 
 window.SoilAgent = SoilAgent;
+
+// Auto-instantiate so pages can use window.soilAgent directly
+if (typeof window !== 'undefined' && !window.soilAgent) {
+    window.soilAgent = new SoilAgent();
+}

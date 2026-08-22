@@ -1,2 +1,224 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Pest & Disease | AgriAI</title><link rel="stylesheet" href="css/variables.css"><link rel="stylesheet" href="css/main.css"><link rel="stylesheet" href="css/components.css"><link rel="stylesheet" href="css/responsive.css"></head><body><nav class="navbar"><div class="nav-container"><a class="nav-brand" href="index.html"><span class="brand-text">Agri<span class="highlight">AI</span></span></a><a class="btn-primary" href="index.html">Dashboard</a></div></nav><main class="main-content"><div class="page-header"><div><h1>Pest & Disease Assessment</h1><p class="subtitle">Track field risk and recommended actions.</p></div></div><section class="content-section"><h2>Current risk</h2><p>Low to moderate · Continue weekly scouting.</p></section></main></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>Pest & Disease | AgriAI</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .pd-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:var(--spacing-lg); margin-bottom:var(--spacing-xl); }
+        .risk-gauge-card { background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:var(--spacing-lg); }
+        .risk-gauge-card h3 { font-size:var(--font-size-base); font-weight:600; margin-bottom:var(--spacing-md); display:flex; align-items:center; gap:var(--spacing-sm); }
+        .risk-gauge-card h3 i { color:var(--danger-red); }
+        .risk-meter { text-align:center; margin:var(--spacing-md) 0; }
+        .risk-number { font-size:var(--font-size-4xl); font-weight:800; }
+        .risk-number.low { color:var(--success-green); }
+        .risk-number.moderate { color:var(--warning-amber); }
+        .risk-number.high,.risk-number.critical { color:var(--danger-red); }
+        .risk-label { font-size:var(--font-size-sm); color:var(--text-secondary); margin-top:var(--spacing-xs); }
+        .risk-bar { height:12px; background:var(--gray-200); border-radius:var(--radius-full); overflow:hidden; margin-top:var(--spacing-md); }
+        .risk-bar-fill { height:100%; border-radius:var(--radius-full); transition:width 1s ease; }
+        .risk-bar-fill.low { background:var(--success-green); }
+        .risk-bar-fill.moderate { background:var(--warning-amber); }
+        .risk-bar-fill.high,.risk-bar-fill.critical { background:var(--danger-red); }
+        .pest-list,.disease-list { list-style:none; }
+        .pest-item,.disease-item { display:flex; gap:var(--spacing-md); align-items:flex-start; padding:var(--spacing-md); background:var(--gray-50); border-radius:var(--radius-md); margin-bottom:var(--spacing-sm); cursor:pointer; transition:background var(--transition-fast); }
+        .pest-item:hover,.disease-item:hover { background:var(--gray-100); }
+        .pest-icon { width:40px; height:40px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .pest-icon.low { background:#C8E6C9; color:var(--success-green); }
+        .pest-icon.moderate { background:#FFE0B2; color:var(--warning-amber); }
+        .pest-icon.high,.pest-icon.critical { background:#FFCDD2; color:var(--danger-red); }
+        .pest-info { flex:1; }
+        .pest-name { font-weight:600; font-size:var(--font-size-sm); }
+        .pest-scientific { font-size:var(--font-size-xs); color:var(--text-secondary); font-style:italic; }
+        .pest-severity { font-size:var(--font-size-xs); margin-top:var(--spacing-xs); }
+        .severity-bar-sm { height:6px; background:var(--gray-200); border-radius:var(--radius-full); overflow:hidden; margin-top:4px; }
+        .severity-fill { height:100%; border-radius:var(--radius-full); }
+        .severity-fill.low { background:var(--success-green); }
+        .severity-fill.moderate { background:var(--warning-amber); }
+        .severity-fill.high,.severity-fill.critical { background:var(--danger-red); }
+        .pest-actions { display:flex; flex-direction:column; gap:var(--spacing-xs); align-items:flex-end; }
+        .sev-badge { padding:2px var(--spacing-sm); border-radius:var(--radius-full); font-size:var(--font-size-xs); font-weight:700; }
+        .sev-badge.low { background:#C8E6C9; color:var(--success-green); }
+        .sev-badge.moderate { background:#FFE0B2; color:var(--warning-amber); }
+        .sev-badge.high,.sev-badge.critical { background:#FFCDD2; color:var(--danger-red); }
+        .tab-bar { display:flex; gap:0; border-bottom:2px solid var(--gray-200); margin-bottom:var(--spacing-lg); }
+        .tab-btn { background:none; border:none; padding:var(--spacing-md) var(--spacing-lg); font-size:var(--font-size-sm); font-weight:600; color:var(--text-secondary); cursor:pointer; border-bottom:3px solid transparent; margin-bottom:-2px; transition:all var(--transition-fast); }
+        .tab-btn.active { color:var(--primary-green); border-bottom-color:var(--primary-green); }
+        .tab-content { display:none; }
+        .tab-content.active { display:block; }
+        .treatment-card { background:var(--bg-card); border-radius:var(--radius-md); padding:var(--spacing-md); border-left:4px solid var(--primary-green); margin-bottom:var(--spacing-sm); }
+        .treatment-card h4 { font-size:var(--font-size-sm); font-weight:600; margin-bottom:var(--spacing-xs); }
+        .treatment-card p { font-size:var(--font-size-sm); color:var(--text-secondary); }
+        .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-top:var(--spacing-md); }
+        .cal-header { text-align:center; font-size:var(--font-size-xs); font-weight:600; color:var(--text-secondary); padding:var(--spacing-xs); }
+        .cal-day { text-align:center; font-size:var(--font-size-xs); padding:var(--spacing-xs); border-radius:var(--radius-sm); background:var(--gray-50); }
+        .cal-day.scout { background:var(--primary-green-lighter); color:var(--primary-green); font-weight:700; }
+        .cal-day.spray { background:#FFE0B2; color:var(--warning-amber); font-weight:700; }
+        .cal-day.today { border:2px solid var(--primary-green); }
+        .alert-bar { background:#FFCDD2; border-radius:var(--radius-md); padding:var(--spacing-md); display:flex; gap:var(--spacing-md); align-items:center; margin-bottom:var(--spacing-md); }
+        .alert-bar.info { background:#BBDEFB; }
+        .alert-bar i { color:var(--danger-red); font-size:var(--font-size-xl); }
+        .alert-bar.info i { color:var(--secondary-blue); }
+        .env-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:var(--spacing-sm); }
+        .env-card { background:var(--gray-50); border-radius:var(--radius-md); padding:var(--spacing-md); text-align:center; }
+        .env-value { font-size:var(--font-size-xl); font-weight:700; color:var(--primary-green); }
+        .env-label { font-size:var(--font-size-xs); color:var(--text-secondary); }
+        .section-card { background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:var(--spacing-lg); margin-bottom:var(--spacing-lg); }
+        .section-card h2 { font-size:var(--font-size-lg); font-weight:600; margin-bottom:var(--spacing-md); display:flex; align-items:center; gap:var(--spacing-sm); }
+        .loading-spinner { display:inline-block; width:28px; height:28px; border:3px solid var(--gray-200); border-top:3px solid var(--primary-green); border-radius:50%; animation:spin 0.8s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+
+<main class="main-content" style="padding-top:0">
+    <div class="page-header">
+        <div class="header-left">
+            <h1><i class="fas fa-bug" style="color:var(--danger-red)"></i> Pest & Disease Assessment</h1>
+            <p class="subtitle">Real-time monitoring, risk scoring and treatment guidance</p>
+        </div>
+        <div class="header-right">
+            <span class="last-updated"><i class="fas fa-clock"></i> Updated: <span id="lastUpdateTime">Just now</span></span>
+            <button class="btn-primary" id="refreshPestBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+            <button class="btn-secondary" id="scoutingReportBtn"><i class="fas fa-clipboard-list"></i> Scouting Report</button>
+        </div>
+    </div>
+
+    <!-- Alert Bar -->
+    <div id="alertBar" class="alert-bar" style="display:none">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div><strong id="alertTitle">Alert</strong> <span id="alertMessage"></span></div>
+    </div>
+
+    <!-- Risk Overview Cards -->
+    <div class="pd-grid">
+        <div class="risk-gauge-card">
+            <h3><i class="fas fa-bug"></i> Overall Pest Risk</h3>
+            <div class="risk-meter">
+                <div class="risk-number" id="pestRiskNumber">—</div>
+                <div class="risk-label" id="pestRiskLabel">Calculating…</div>
+            </div>
+            <div class="risk-bar"><div class="risk-bar-fill" id="pestRiskBar" style="width:0%"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--font-size-xs);color:var(--text-hint);margin-top:4px">
+                <span>0 — Low</span><span>5 — Moderate</span><span>10 — Critical</span>
+            </div>
+        </div>
+        <div class="risk-gauge-card">
+            <h3><i class="fas fa-viruses" style="color:var(--warning-amber)"></i> Disease Risk</h3>
+            <div class="risk-meter">
+                <div class="risk-number" id="diseaseRiskNumber">—</div>
+                <div class="risk-label" id="diseaseRiskLabel">Calculating…</div>
+            </div>
+            <div class="risk-bar"><div class="risk-bar-fill" id="diseaseRiskBar" style="width:0%"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:var(--font-size-xs);color:var(--text-hint);margin-top:4px">
+                <span>0%</span><span>50%</span><span>100%</span>
+            </div>
+        </div>
+        <div class="risk-gauge-card">
+            <h3><i class="fas fa-cloud-sun" style="color:var(--secondary-blue)"></i> Environmental Conditions</h3>
+            <div class="env-grid" id="envConditions">
+                <div class="env-card"><div class="env-value" id="envTemp">—</div><div class="env-label">Temperature</div></div>
+                <div class="env-card"><div class="env-value" id="envHumidity">—</div><div class="env-label">Humidity</div></div>
+                <div class="env-card"><div class="env-value" id="envWind">—</div><div class="env-label">Wind km/h</div></div>
+                <div class="env-card"><div class="env-value" id="envDew">—</div><div class="env-label">Dew Point</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs: Pests / Diseases / Treatment / Calendar -->
+    <div class="section-card">
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="pests"><i class="fas fa-bug"></i> Active Pests</button>
+            <button class="tab-btn" data-tab="diseases"><i class="fas fa-viruses"></i> Disease Alerts</button>
+            <button class="tab-btn" data-tab="treatment"><i class="fas fa-spray-can"></i> Treatment Guide</button>
+            <button class="tab-btn" data-tab="calendar"><i class="fas fa-calendar-alt"></i> Scouting Calendar</button>
+        </div>
+
+        <div class="tab-content active" id="tab-pests">
+            <div id="pestLoadingIndicator" style="text-align:center;padding:var(--spacing-lg);display:none"><div class="loading-spinner"></div></div>
+            <ul class="pest-list" id="pestList"></ul>
+        </div>
+
+        <div class="tab-content" id="tab-diseases">
+            <div id="diseaseLoadingIndicator" style="text-align:center;padding:var(--spacing-lg);display:none"><div class="loading-spinner"></div></div>
+            <ul class="disease-list" id="diseaseList"></ul>
+        </div>
+
+        <div class="tab-content" id="tab-treatment">
+            <div id="treatmentGuide"></div>
+        </div>
+
+        <div class="tab-content" id="tab-calendar">
+            <p style="font-size:var(--font-size-sm);color:var(--text-secondary);margin-bottom:var(--spacing-md)">
+                <span style="display:inline-block;width:12px;height:12px;background:var(--primary-green-lighter);border-radius:2px;margin-right:4px"></span>Scouting day
+                <span style="display:inline-block;width:12px;height:12px;background:#FFE0B2;border-radius:2px;margin:0 4px 0 12px"></span>Spray window
+                <span style="display:inline-block;width:12px;height:12px;border:2px solid var(--primary-green);border-radius:2px;margin:0 4px 0 12px"></span>Today
+            </p>
+            <div class="calendar-grid" id="scoutingCalendar"></div>
+        </div>
+    </div>
+
+    <!-- Risk Chart -->
+    <div class="section-card">
+        <h2><i class="fas fa-chart-area"></i> 30-Day Risk Trend</h2>
+        <div style="height:220px"><canvas id="riskTrendChart"></canvas></div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; 2026 AI Smart Agriculture Decision Agent.</p>
+        <div class="footer-links">
+            <a href="recommendations.html">Recommendations</a>
+            <a href="farmer-feedback.html">Feedback</a>
+        </div>
+    </div>
+</footer>
+
+
+<script src="js/components/navigation.js"></script>
+    <script src="js/vendor/chart.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils/formatters.js"></script>
+<script src="js/agents/orchestrator-agent.js?v=3"></script>
+<script src="js/agents/crop-agent.js"></script>
+<script src="js/agents/weather-agent.js"></script>
+<script src="js/agents/soil-agent.js"></script>
+<script src="js/agents/pest-agent.js"></script>
+<script src="js/agents/market-agent.js"></script>
+<script src="js/agents/explanation-agent.js"></script>
+<script src="js/pages/pest-disease.js"></script>
+<script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem('theme', t);
+        document.querySelector('#themeToggle i').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+    document.querySelector('#themeToggle i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    document.getElementById('notificationBtn').addEventListener('click', () => document.getElementById('notificationModal').classList.toggle('active'));
+    document.querySelector('.close-modal').addEventListener('click', () => document.getElementById('notificationModal').classList.remove('active'));
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        });
+    });
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+</script>
+</body>
+</html>

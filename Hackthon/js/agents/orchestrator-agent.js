@@ -842,19 +842,50 @@ class OrchestratorAgent {
     }
 
     async getWeatherData() {
-        return await this.agents.weather.getCurrentData();
+        const data = await this.agents.weather.getCurrentData();
+        // Normalise: always expose both .temperature and .temp so any consumer works
+        if (data && data.temperature === undefined && data.temp !== undefined) {
+            data.temperature = data.temp;
+        }
+        if (data && data.temp === undefined && data.temperature !== undefined) {
+            data.temp = data.temperature;
+        }
+        // Also attach forecast so dashboard widget can render it
+        if (data && !data.forecast) {
+            data.forecast = await this.agents.weather.getForecast(7).catch(() => []);
+        }
+        return data;
     }
 
     async getSoilData() {
         return await this.agents.soil.getSoilData();
     }
 
+    async getPestData() {
+        return await this.agents.pest.getRiskAssessment();
+    }
+
     async getRecommendations() {
-        return this.state.recommendations;
+        // If no recommendations yet, trigger an assessment first
+        if (!this.state.recommendations || this.state.recommendations.length === 0) {
+            await this.runFullAssessment().catch(() => {});
+        }
+        return this.state.recommendations || [];
     }
 
     async getMarketData() {
-        return await this.agents.market.getMarketData();
+        const data = await this.agents.market.getMarketData();
+        // Flatten: expose currentPrice at top level for dashboard widget
+        if (data && !data.currentPrice && data.current_prices) {
+            const wheat = data.current_prices['Wheat'];
+            if (wheat) {
+                data.currentPrice = wheat.price;
+                data.historical = (await this.agents.market.getPriceHistory('Wheat', 30)).map
+                    ? await this.agents.market.getPriceHistory('Wheat', 30)
+                    : [];
+            }
+        }
+        return data;
     }
 
     async getEmergencyStatus() {

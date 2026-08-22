@@ -538,10 +538,7 @@ class SoilIrrigationPage {
     }
 
     async deleteSchedule(id) {
-        const confirmed = await Modal.confirm(
-            'Are you sure you want to delete this irrigation schedule?',
-            { title: 'Delete Schedule' }
-        );
+        const confirmed = window.confirm('Are you sure you want to delete this irrigation schedule?');
 
         if (confirmed) {
             // Delete logic here

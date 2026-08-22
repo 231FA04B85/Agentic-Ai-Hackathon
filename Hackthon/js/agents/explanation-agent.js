@@ -562,3 +562,8 @@ class ExplanationAgent {
 }
 
 window.ExplanationAgent = ExplanationAgent;
+
+// Auto-instantiate so pages can use window.explanationAgent directly
+if (typeof window !== 'undefined' && !window.explanationAgent) {
+    window.explanationAgent = new ExplanationAgent();
+}
