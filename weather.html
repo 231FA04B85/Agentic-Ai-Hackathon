@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <title>Weather | AgriAI</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .weather-hero { background:linear-gradient(135deg,#1565C0,#0288D1); border-radius:var(--radius-lg); padding:var(--spacing-xl); color:#fff; margin-bottom:var(--spacing-xl); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:var(--spacing-lg); }
+        .weather-main-temp { font-size:80px; font-weight:800; line-height:1; }
+        .weather-main-condition { font-size:var(--font-size-xl); margin-top:var(--spacing-xs); opacity:0.9; }
+        .weather-main-feels { font-size:var(--font-size-sm); opacity:0.75; margin-top:4px; }
+        .weather-main-icon { font-size:80px; opacity:0.8; }
+        .weather-details-row { display:flex; gap:var(--spacing-xl); flex-wrap:wrap; margin-top:var(--spacing-md); }
+        .weather-detail { display:flex; flex-direction:column; align-items:center; gap:4px; }
+        .weather-detail i { font-size:var(--font-size-lg); opacity:0.85; }
+        .weather-detail span { font-size:var(--font-size-xs); opacity:0.7; }
+        .weather-detail strong { font-size:var(--font-size-base); }
+        .section-card { background:var(--bg-card); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); padding:var(--spacing-lg); margin-bottom:var(--spacing-lg); }
+        .section-card h2 { font-size:var(--font-size-lg); font-weight:600; margin-bottom:var(--spacing-md); display:flex; align-items:center; gap:var(--spacing-sm); }
+        .forecast-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:var(--spacing-md); }
+        .forecast-card { background:var(--gray-50); border-radius:var(--radius-md); padding:var(--spacing-md); text-align:center; transition:all var(--transition-fast); }
+        .forecast-card:hover { background:var(--primary-green-lighter); }
+        .forecast-day-name { font-weight:700; font-size:var(--font-size-sm); margin-bottom:var(--spacing-sm); }
+        .forecast-icon { font-size:28px; margin:var(--spacing-sm) 0; }
+        .forecast-icon.sunny { color:#F9A825; }
+        .forecast-icon.cloudy { color:var(--gray-500); }
+        .forecast-icon.rain { color:var(--secondary-blue); }
+        .forecast-icon.storm { color:#6A1B9A; }
+        .forecast-high { font-size:var(--font-size-lg); font-weight:700; }
+        .forecast-low { font-size:var(--font-size-sm); color:var(--text-secondary); }
+        .forecast-precip { font-size:var(--font-size-xs); color:var(--secondary-blue); margin-top:4px; }
+        .forecast-wind { font-size:var(--font-size-xs); color:var(--text-hint); }
+        .agri-metrics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:var(--spacing-md); }
+        .agri-metric-card { background:var(--gray-50); border-radius:var(--radius-md); padding:var(--spacing-md); }
+        .agri-metric-label { font-size:var(--font-size-xs); color:var(--text-secondary); text-transform:uppercase; letter-spacing:0.05em; }
+        .agri-metric-value { font-size:var(--font-size-xl); font-weight:700; color:var(--primary-green); margin:4px 0; }
+        .agri-metric-desc { font-size:var(--font-size-xs); color:var(--text-secondary); }
+        .alert-item { border-radius:var(--radius-md); padding:var(--spacing-md); display:flex; gap:var(--spacing-md); align-items:flex-start; margin-bottom:var(--spacing-sm); }
+        .alert-item.moderate,.alert-item.warning { background:#FFE0B2; border-left:4px solid var(--warning-amber); }
+        .alert-item.high,.alert-item.danger { background:#FFCDD2; border-left:4px solid var(--danger-red); }
+        .alert-item.info,.alert-item.low { background:#BBDEFB; border-left:4px solid var(--secondary-blue); }
+        .alert-item.success,.alert-item.none { background:#C8E6C9; border-left:4px solid var(--success-green); }
+        .alert-icon { font-size:var(--font-size-xl); flex-shrink:0; margin-top:2px; }
+        .chart-container { height:220px; }
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:var(--spacing-lg); }
+        .loading-spinner { display:inline-block; width:28px; height:28px; border:3px solid var(--gray-200); border-top:3px solid #fff; border-radius:50%; animation:spin 0.8s linear infinite; }
+        .loading-spinner.dark { border-top-color:var(--primary-green); }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @media(max-width:768px){ .weather-hero { flex-direction:column; } .two-col { grid-template-columns:1fr; } .weather-main-temp { font-size:56px; } }
+    </style>
+</head>
+<body>
+
+
+<main class="main-content" style="padding-top:0">
+    <div class="page-header">
+        <div class="header-left">
+            <h1><i class="fas fa-cloud-sun" style="color:var(--secondary-blue)"></i> Weather Intelligence</h1>
+            <p class="subtitle">7-day forecast, agricultural weather metrics, and alerts</p>
+        </div>
+        <div class="header-right">
+            <span class="last-updated"><i class="fas fa-clock"></i> Updated: <span id="lastWeatherUpdate">Just now</span></span>
+            <button class="btn-primary" id="refreshWeatherBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+            <button class="btn-secondary" id="exportWeatherBtn"><i class="fas fa-download"></i> Export</button>
+        </div>
+    </div>
+
+    <!-- Current Weather Hero -->
+    <div class="weather-hero" id="currentWeatherHero">
+        <div>
+            <div style="font-size:var(--font-size-sm);opacity:0.75;margin-bottom:var(--spacing-sm)"><i class="fas fa-map-marker-alt"></i> Farm Location</div>
+            <div class="weather-main-temp" id="heroTemp"><div class="loading-spinner"></div></div>
+            <div class="weather-main-condition" id="heroCondition">Loading…</div>
+            <div class="weather-main-feels" id="heroFeels"></div>
+            <div class="weather-details-row">
+                <div class="weather-detail"><i class="fas fa-tint"></i><strong id="heroHumidity">—</strong><span>Humidity</span></div>
+                <div class="weather-detail"><i class="fas fa-wind"></i><strong id="heroWind">—</strong><span>Wind km/h</span></div>
+                <div class="weather-detail"><i class="fas fa-compress-alt"></i><strong id="heroPressure">—</strong><span>hPa</span></div>
+                <div class="weather-detail"><i class="fas fa-sun"></i><strong id="heroUV">—</strong><span>UV Index</span></div>
+                <div class="weather-detail"><i class="fas fa-cloud-rain"></i><strong id="heroPrecip">—</strong><span>Rain mm</span></div>
+            </div>
+        </div>
+        <div class="weather-main-icon" id="heroIcon"><i class="fas fa-cloud-sun"></i></div>
+    </div>
+
+    <!-- 7-Day Forecast -->
+    <div class="section-card">
+        <h2><i class="fas fa-calendar-week" style="color:var(--secondary-blue)"></i> 7-Day Forecast</h2>
+        <div class="forecast-grid" id="forecastGrid"></div>
+    </div>
+
+    <!-- Agricultural Weather Metrics -->
+    <div class="section-card">
+        <h2><i class="fas fa-seedling" style="color:var(--primary-green)"></i> Agricultural Weather Metrics</h2>
+        <div class="agri-metrics-grid" id="agriMetrics"></div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="two-col">
+        <div class="section-card">
+            <h2><i class="fas fa-thermometer-half" style="color:var(--danger-red)"></i> Temperature Forecast</h2>
+            <div class="chart-container"><canvas id="temperatureChart"></canvas></div>
+        </div>
+        <div class="section-card">
+            <h2><i class="fas fa-cloud-rain" style="color:var(--secondary-blue)"></i> Precipitation Forecast</h2>
+            <div class="chart-container"><canvas id="precipitationChart"></canvas></div>
+        </div>
+    </div>
+
+    <!-- Weather Alerts -->
+    <div class="section-card">
+        <h2><i class="fas fa-exclamation-triangle" style="color:var(--warning-amber)"></i> Weather Alerts</h2>
+        <div id="weatherAlerts"></div>
+    </div>
+</main>
+
+<footer class="footer">
+    <div class="footer-content">
+        <p>&copy; 2026 AI Smart Agriculture Decision Agent.</p>
+        <div class="footer-links">
+            <a href="recommendations.html">Recommendations</a>
+            <a href="farmer-feedback.html">Feedback</a>
+        </div>
+    </div>
+</footer>
+
+
+<script src="js/components/navigation.js"></script>
+    <script src="js/vendor/chart.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/utils/formatters.js"></script>
+<script src="js/agents/orchestrator-agent.js?v=3"></script>
+<script src="js/agents/crop-agent.js"></script>
+<script src="js/agents/weather-agent.js"></script>
+<script src="js/agents/soil-agent.js"></script>
+<script src="js/agents/pest-agent.js"></script>
+<script src="js/agents/market-agent.js"></script>
+<script src="js/agents/explanation-agent.js"></script>
+<script src="js/pages/weather.js"></script>
+<script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeToggle').addEventListener('click', () => {
+        const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem('theme', t);
+        document.querySelector('#themeToggle i').className = t === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    });
+    document.querySelector('#themeToggle i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    document.getElementById('notificationBtn').addEventListener('click', () => document.getElementById('notificationModal').classList.toggle('active'));
+    document.querySelector('.close-modal').addEventListener('click', () => document.getElementById('notificationModal').classList.remove('active'));
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
+</script>
+</body>
+</html>

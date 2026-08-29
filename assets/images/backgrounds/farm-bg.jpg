@@ -1,0 +1,235 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- Farm Background - SVG Illustration -->
+  
+  <!-- Sky Gradient -->
+  <defs>
+    <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="40%" style="stop-color:#B3E5FC;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#E1F5FE;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F5F9FF;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="sunGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFF9C4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFF176;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FFD54F;stop-opacity:0.6" />
+    </linearGradient>
+    
+    <linearGradient id="fieldGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2E7D32;stop-opacity:0.3" />
+      <stop offset="50%" style="stop-color:#388E3C;stop-opacity:0.4" />
+      <stop offset="100%" style="stop-color:#43A047;stop-opacity:0.3" />
+    </linearGradient>
+    
+    <linearGradient id="cropRowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#66BB6A;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#2E7D32;stop-opacity:0.8" />
+    </linearGradient>
+    
+    <linearGradient id="groundGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8D6E63;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#4E342E;stop-opacity:0.5" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#skyGradient)"/>
+  
+  <!-- Sun -->
+  <circle cx="1600" cy="150" r="80" fill="url(#sunGradient)"/>
+  <circle cx="1600" cy="150" r="120" fill="url(#sunGradient)" opacity="0.2"/>
+  <circle cx="1600" cy="150" r="160" fill="url(#sunGradient)" opacity="0.1"/>
+  
+  <!-- Clouds -->
+  <g opacity="0.7">
+    <ellipse cx="300" cy="180" rx="120" ry="40" fill="white"/>
+    <ellipse cx="360" cy="160" rx="80" ry="35" fill="white"/>
+    <ellipse cx="240" cy="170" rx="70" ry="30" fill="white"/>
+  </g>
+  
+  <g opacity="0.5">
+    <ellipse cx="800" cy="120" rx="100" ry="30" fill="white"/>
+    <ellipse cx="850" cy="105" rx="70" ry="25" fill="white"/>
+    <ellipse cx="750" cy="110" rx="60" ry="20" fill="white"/>
+  </g>
+  
+  <g opacity="0.4">
+    <ellipse cx="1200" cy="200" rx="90" ry="25" fill="white"/>
+    <ellipse cx="1240" cy="185" rx="60" ry="20" fill="white"/>
+  </g>
+  
+  <!-- Distant Hills -->
+  <path d="M0 500 Q200 400 400 480 Q600 380 800 460 Q1000 350 1200 440 Q1400 370 1600 450 Q1800 390 1920 470 L1920 600 L0 600 Z" 
+        fill="#81C784" opacity="0.3"/>
+  
+  <!-- Far Fields -->
+  <rect x="0" y="520" width="1920" height="80" fill="#A5D6A7" opacity="0.3"/>
+  
+  <!-- Crop Rows - Left Section -->
+  <g opacity="0.6">
+    <rect x="50" y="550" width="300" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="50" y="570" width="300" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="50" y="590" width="300" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="50" y="610" width="300" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="50" y="630" width="300" height="4" rx="2" fill="url(#cropRowGradient)"/>
+  </g>
+  
+  <!-- Crop Rows - Middle Section -->
+  <g opacity="0.5">
+    <rect x="400" y="540" width="400" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="400" y="560" width="400" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="400" y="580" width="400" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="400" y="600" width="400" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="400" y="620" width="400" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="400" y="640" width="400" height="4" rx="2" fill="url(#cropRowGradient)"/>
+  </g>
+  
+  <!-- Crop Rows - Right Section -->
+  <g opacity="0.4">
+    <rect x="850" y="530" width="500" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="850" y="550" width="500" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="850" y="570" width="500" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="850" y="590" width="500" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="850" y="610" width="500" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="850" y="630" width="500" height="4" rx="2" fill="url(#cropRowGradient)"/>
+    <rect x="850" y="650" width="500" height="4" rx="2" fill="url(#cropRowGradient)"/>
+  </g>
+  
+  <!-- Individual Plants - Left Field -->
+  <g fill="#66BB6A" opacity="0.7">
+    <ellipse cx="80" cy="555" rx="12" ry="15"/>
+    <ellipse cx="120" cy="565" rx="12" ry="15"/>
+    <ellipse cx="160" cy="575" rx="12" ry="15"/>
+    <ellipse cx="200" cy="585" rx="12" ry="15"/>
+    <ellipse cx="240" cy="595" rx="12" ry="15"/>
+    <ellipse cx="280" cy="605" rx="12" ry="15"/>
+  </g>
+  
+  <!-- Individual Plants - Middle Field -->
+  <g fill="#4CAF50" opacity="0.6">
+    <ellipse cx="430" cy="545" rx="10" ry="12"/>
+    <ellipse cx="470" cy="555" rx="10" ry="12"/>
+    <ellipse cx="510" cy="565" rx="10" ry="12"/>
+    <ellipse cx="550" cy="575" rx="10" ry="12"/>
+    <ellipse cx="590" cy="585" rx="10" ry="12"/>
+    <ellipse cx="630" cy="595" rx="10" ry="12"/>
+    <ellipse cx="670" cy="605" rx="10" ry="12"/>
+    <ellipse cx="710" cy="615" rx="10" ry="12"/>
+  </g>
+  
+  <!-- Individual Plants - Right Field -->
+  <g fill="#43A047" opacity="0.5">
+    <ellipse cx="880" cy="535" rx="8" ry="10"/>
+    <ellipse cx="920" cy="545" rx="8" ry="10"/>
+    <ellipse cx="960" cy="555" rx="8" ry="10"/>
+    <ellipse cx="1000" cy="565" rx="8" ry="10"/>
+    <ellipse cx="1040" cy="575" rx="8" ry="10"/>
+    <ellipse cx="1080" cy="585" rx="8" ry="10"/>
+    <ellipse cx="1120" cy="595" rx="8" ry="10"/>
+    <ellipse cx="1160" cy="605" rx="8" ry="10"/>
+  </g>
+  
+  <!-- Trees in Distance -->
+  <g opacity="0.5">
+    <ellipse cx="100" cy="480" rx="35" ry="50" fill="#388E3C"/>
+    <ellipse cx="80" cy="490" rx="30" ry="40" fill="#2E7D32"/>
+    <ellipse cx="130" cy="485" rx="25" ry="35" fill="#43A047"/>
+    
+    <ellipse cx="600" cy="460" rx="40" ry="55" fill="#388E3C"/>
+    <ellipse cx="580" cy="470" rx="30" ry="45" fill="#2E7D32"/>
+    <ellipse cx="630" cy="465" rx="28" ry="40" fill="#43A047"/>
+    
+    <ellipse cx="1400" cy="450" rx="45" ry="60" fill="#388E3C"/>
+    <ellipse cx="1370" cy="460" rx="35" ry="50" fill="#2E7D32"/>
+    <ellipse cx="1420" cy="455" rx="30" ry="45" fill="#43A047"/>
+  </g>
+  
+  <!-- Tree Trunks -->
+  <g stroke="#5D4037" stroke-width="4" fill="none">
+    <line x1="100" y1="520" x2="100" y2="480"/>
+    <line x1="600" y1="505" x2="600" y2="460"/>
+    <line x1="1400" y1="500" x2="1400" y2="450"/>
+  </g>
+  
+  <!-- Near Field (Bottom section) -->
+  <rect x="0" y="700" width="1920" height="380" fill="url(#groundGradient)"/>
+  
+  <!-- Ground Texture -->
+  <g opacity="0.1">
+    <ellipse cx="300" cy="800" rx="100" ry="30" fill="#4E342E"/>
+    <ellipse cx="900" cy="850" rx="150" ry="40" fill="#4E342E"/>
+    <ellipse cx="1500" cy="820" rx="120" ry="35" fill="#4E342E"/>
+  </g>
+  
+  <!-- Foreground Crop Rows -->
+  <g opacity="0.7">
+    <rect x="100" y="740" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+    <rect x="100" y="770" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+    <rect x="100" y="800" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+    <rect x="100" y="830" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+    <rect x="100" y="860" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+    <rect x="100" y="890" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+    <rect x="100" y="920" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+    <rect x="100" y="950" width="1720" height="3" rx="1.5" fill="#2E7D32"/>
+  </g>
+  
+  <!-- Tractor (Far, small) -->
+  <g transform="translate(1200, 830)">
+    <!-- Body -->
+    <rect x="0" y="0" width="60" height="25" rx="3" fill="#C62828" opacity="0.8"/>
+    <rect x="-10" y="5" width="20" height="15" rx="2" fill="#B71C1C" opacity="0.7"/>
+    <!-- Cab -->
+    <rect x="15" y="-15" width="20" height="15" rx="2" fill="#1565C0" opacity="0.6"/>
+    <!-- Wheels -->
+    <circle cx="10" cy="30" r="12" stroke="#424242" stroke-width="3" fill="#757575" opacity="0.7"/>
+    <circle cx="50" cy="30" r="12" stroke="#424242" stroke-width="3" fill="#757575" opacity="0.7"/>
+  </g>
+  
+  <!-- Birds in sky -->
+  <g stroke="#455A64" stroke-width="2" fill="none" opacity="0.4">
+    <path d="M500 250 Q505 245 510 250 Q515 245 520 250"/>
+    <path d="M530 240 Q535 235 540 240 Q545 235 550 240"/>
+    <path d="M480 260 Q485 255 490 260 Q495 255 500 260"/>
+  </g>
+  
+  <!-- Fence posts -->
+  <g stroke="#5D4037" stroke-width="3" opacity="0.6">
+    <line x1="200" y1="700" x2="200" y2="660"/>
+    <line x1="250" y1="700" x2="250" y2="660"/>
+    <line x1="300" y1="700" x2="300" y2="660"/>
+    <line x1="350" y1="700" x2="350" y2="660"/>
+    <line x1="200" y1="680" x2="350" y2="680"/>
+  </g>
+  
+  <!-- Fence - Right -->
+  <g stroke="#5D4037" stroke-width="3" opacity="0.6">
+    <line x1="1600" y1="700" x2="1600" y2="660"/>
+    <line x1="1650" y1="700" x2="1650" y2="660"/>
+    <line x1="1700" y1="700" x2="1700" y2="660"/>
+    <line x1="1750" y1="700" x2="1750" y2="660"/>
+    <line x1="1600" y1="680" x2="1750" y2="680"/>
+  </g>
+  
+  <!-- Irrigation Sprinkler -->
+  <g opacity="0.5">
+    <line x1="700" y1="700" x2="700" y2="670" stroke="#757575" stroke-width="2"/>
+    <circle cx="700" cy="670" r="3" fill="#42A5F5"/>
+    <path d="M695 665 Q700 655 705 665" stroke="#42A5F5" stroke-width="1.5" fill="none"/>
+    <path d="M692 670 Q700 660 708 670" stroke="#42A5F5" stroke-width="1.5" fill="none"/>
+    <path d="M694 675 Q700 665 706 675" stroke="#42A5F5" stroke-width="1.5" fill="none"/>
+  </g>
+  
+  <!-- Vignette Effect -->
+  <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+    <stop offset="0%" style="stop-color:transparent;stop-opacity:0"/>
+    <stop offset="100%" style="stop-color:#000000;stop-opacity:0.3"/>
+  </radialGradient>
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#vignette)"/>
+  
+  <!-- Overlay text (optional - can be removed for pure background) -->
+  <text x="960" y="1050" text-anchor="middle" font-family="Arial, sans-serif" 
+        font-size="14" fill="#FFFFFF" opacity="0.3" letter-spacing="2">
+    AI SMART AGRICULTURE DECISION AGENT
+  </text>
+</svg>

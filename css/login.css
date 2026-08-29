@@ -1,0 +1,955 @@
+/* ─────────────────────────────────────────── */
+/* Login Page Styles                          */
+/* ─────────────────────────────────────────── */
+
+:root {
+    --login-max-width: 1200px;
+    --form-width: 420px;
+    --border-radius-lg: 20px;
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Container Layout ─── */
+.login-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    background: var(--background);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(46, 125, 50, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(21, 101, 192, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* ─── Brand Section (Left Side) ─── */
+.login-brand-section {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-blue) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-brand-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.login-brand-section::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -5%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.brand-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    max-width: 400px;
+}
+
+.brand-logo {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.brand-content h1 {
+    font-size: 48px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.brand-content h1 .highlight {
+    color: #fff;
+    opacity: 0.9;
+}
+
+.brand-tagline {
+    font-size: 16px;
+    margin-bottom: 50px;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.brand-features {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: left;
+}
+
+.brand-features .feature {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    opacity: 0.95;
+    animation: slideIn 0.6s ease forwards;
+    animation-fill-mode: both;
+}
+
+.brand-features .feature:nth-child(1) { animation-delay: 0.1s; }
+.brand-features .feature:nth-child(2) { animation-delay: 0.2s; }
+.brand-features .feature:nth-child(3) { animation-delay: 0.3s; }
+.brand-features .feature:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 0.95;
+        transform: translateX(0);
+    }
+}
+
+.brand-features .feature i {
+    font-size: 20px;
+    min-width: 20px;
+}
+
+/* ─── Form Section (Right Side) ─── */
+.login-form-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.login-form-container {
+    width: 100%;
+    max-width: var(--form-width);
+    animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.mobile-logo {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+.mobile-logo i {
+    font-size: 32px;
+}
+
+.login-form-container h2 {
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.login-subtitle {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+}
+
+/* ─── Form Steps ─── */
+.login-step {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.login-step.fade-out {
+    animation: fadeOut 0.3s ease;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* ─── Form Groups ─── */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.form-group label i {
+    font-size: 16px;
+    color: var(--primary-green);
+}
+
+/* ─── Input Wrapper (for country code) ─── */
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--input-background);
+    border: 2px solid var(--input-border);
+    border-radius: 12px;
+    transition: var(--transition-smooth);
+    overflow: hidden;
+    height: 50px;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.country-code {
+    padding: 0 16px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    border-right: 1px solid var(--input-border);
+    user-select: none;
+}
+
+.input-wrapper input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 16px;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.input-wrapper input::placeholder {
+    color: var(--text-hint);
+}
+
+.input-wrapper input:focus {
+    outline: none;
+}
+
+/* ─── OTP Input ─── */
+.otp-input-container {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.otp-input {
+    width: 100%;
+    height: 56px;
+    padding: 12px;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 12px;
+    text-align: center;
+    border: 2px solid var(--input-border);
+    border-radius: 12px;
+    background: var(--input-background);
+    color: var(--text-primary);
+    transition: var(--transition-smooth);
+    font-family: 'Courier New', monospace;
+}
+
+.otp-input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.otp-display {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 56px;
+    pointer-events: none;
+}
+
+.otp-display span {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-green);
+    border-bottom: 2px solid var(--primary-green);
+    opacity: 0;
+    animation: slideInUp 0.2s ease forwards;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Form Hints and Errors ─── */
+.form-hint {
+    display: block;
+    font-size: 12px;
+    color: var(--text-hint);
+    margin-top: 6px;
+}
+
+.form-error {
+    display: block;
+    font-size: 12px;
+    color: var(--danger-red);
+    margin-top: 6px;
+    min-height: 16px;
+}
+
+.form-error.show {
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+/* ─── Buttons ─── */
+.btn-login {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-top: 8px;
+}
+
+.btn-primary {
+    background: var(--primary-green);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--primary-green-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.3);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary i {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.btn-primary:hover i {
+    transform: translateX(4px);
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    color: var(--primary-green);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 0;
+    text-decoration: underline;
+    transition: var(--transition-smooth);
+}
+
+.btn-link:hover {
+    color: var(--primary-green-dark);
+}
+
+/* ─── Verification Header ─── */
+.verification-header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding: 20px;
+    background: rgba(46, 125, 50, 0.05);
+    border-radius: 12px;
+}
+
+.verification-header p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.phone-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.phone-display i {
+    color: var(--primary-green);
+    font-size: 18px;
+}
+
+.phone-display .btn-link {
+    font-size: 12px;
+    padding: 0 8px;
+}
+
+/* ─── OTP Actions ─── */
+.otp-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.resend-info {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.resend-info .btn-link {
+    display: inline;
+}
+
+.resend-timer {
+    display: inline-block;
+    color: var(--secondary-blue);
+    font-weight: 600;
+    margin-left: 6px;
+    min-width: 50px;
+}
+
+/* ─── Info Cards ─── */
+.info-card {
+    margin-top: 24px;
+    padding: 16px;
+    background: rgba(21, 101, 192, 0.05);
+    border: 1px solid rgba(21, 101, 192, 0.2);
+    border-radius: 12px;
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.info-card i {
+    font-size: 16px;
+    color: var(--secondary-blue);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.info-card p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ─── Demo Notice ─── */
+.demo-notice {
+    margin-top: 32px;
+    padding: 12px 16px;
+    background: rgba(255, 152, 0, 0.1);
+    border: 1px solid rgba(255, 152, 0, 0.3);
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    font-size: 12px;
+    color: #e65100;
+}
+
+.demo-notice i {
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.demo-notice p {
+    margin: 0;
+}
+
+/* ─── Loading State ─── */
+.loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border: 2px solid rgba(46, 125, 50, 0.3);
+    border-top-color: var(--primary-green);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Tablet View (1024px and below)            */
+/* ─────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-brand-section {
+        display: none;
+    }
+
+    .login-form-section {
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .login-form-container {
+        max-width: 400px;
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Mobile View (768px and below)              */
+/* ─────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .login-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-brand-section {
+        display: none;
+    }
+
+    .mobile-logo {
+        display: flex;
+    }
+
+    .login-form-section {
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+
+    .login-form-container {
+        width: 100%;
+        max-width: none;
+    }
+
+    .login-form-container h2 {
+        font-size: 24px;
+    }
+
+    .login-subtitle {
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .input-wrapper,
+    .otp-input {
+        height: 48px;
+        font-size: 16px;
+    }
+
+    .otp-input {
+        letter-spacing: 8px;
+    }
+
+    .btn-login {
+        height: 48px;
+        font-size: 14px;
+    }
+
+    .info-card {
+        margin-top: 20px;
+        padding: 12px;
+        font-size: 11px;
+    }
+
+    .verification-header {
+        margin-bottom: 24px;
+        padding: 16px;
+    }
+
+    .demo-notice {
+        font-size: 11px;
+        padding: 10px 12px;
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Small Mobile (360px and below)             */
+/* ─────────────────────────────────────────── */
+
+@media (max-width: 360px) {
+    .login-form-container {
+        padding: 0;
+    }
+
+    .login-form-container h2 {
+        font-size: 20px;
+    }
+
+    .brand-logo {
+        font-size: 64px;
+    }
+
+    .brand-content h1 {
+        font-size: 36px;
+    }
+
+    .input-wrapper,
+    .otp-input {
+        height: 44px;
+        font-size: 14px;
+    }
+
+    .otp-input {
+        letter-spacing: 4px;
+    }
+
+    .btn-login {
+        height: 44px;
+        font-size: 13px;
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Landscape Orientation (Mobile)             */
+/* ─────────────────────────────────────────── */
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .login-form-section {
+        padding-top: 20px;
+        min-height: auto;
+    }
+
+    .login-form-container {
+        max-width: 500px;
+    }
+
+    .login-form-container h2 {
+        margin-bottom: 0;
+    }
+
+    .login-subtitle {
+        margin-bottom: 20px;
+    }
+
+    .info-card {
+        display: none;
+    }
+
+    .demo-notice {
+        display: none;
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Dark Mode Support                           */
+/* ─────────────────────────────────────────── */
+
+[data-theme="dark"] .login-brand-section {
+    background: linear-gradient(135deg, var(--primary-green-dark) 0%, var(--secondary-blue-dark) 100%);
+}
+
+[data-theme="dark"] .input-wrapper {
+    background: var(--input-background-dark);
+    border-color: var(--input-border-dark);
+}
+
+[data-theme="dark"] .input-wrapper:focus-within {
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+}
+
+[data-theme="dark"] .info-card {
+    background: rgba(21, 101, 192, 0.1);
+    border-color: rgba(21, 101, 192, 0.3);
+}
+
+/* ─────────────────────────────────────────── */
+/* Print Styles                                */
+/* ─────────────────────────────────────────── */
+
+@media print {
+    .login-container {
+        display: none;
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Accessibility                               */
+/* ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+.btn-login:focus-visible,
+.btn-link:focus-visible,
+input:focus-visible {
+    outline: 3px solid var(--primary-green);
+    outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: more) {
+    .input-wrapper {
+        border-width: 3px;
+    }
+
+    .btn-primary {
+        border: 2px solid var(--text-primary);
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Toast Notifications                         */
+/* ─────────────────────────────────────────── */
+
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: white;
+    color: var(--text-primary);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.3s ease;
+    pointer-events: auto;
+    min-width: 300px;
+    max-width: 400px;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-content strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.toast-content p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-hint);
+    font-size: 16px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.toast-close:hover {
+    color: var(--text-primary);
+}
+
+/* Toast Types */
+.toast-success {
+    background: #e8f5e9;
+    border-left: 4px solid var(--success-green);
+    color: #2e7d32;
+}
+
+.toast-success .toast-close {
+    color: #a5d6a7;
+}
+
+.toast-error {
+    background: #ffebee;
+    border-left: 4px solid var(--danger-red);
+    color: #c62828;
+}
+
+.toast-error .toast-close {
+    color: #ef9a9a;
+}
+
+.toast-warning {
+    background: #fff3e0;
+    border-left: 4px solid #ff9800;
+    color: #e65100;
+}
+
+.toast-warning .toast-close {
+    color: #ffcc80;
+}
+
+.toast-info {
+    background: #e3f2fd;
+    border-left: 4px solid var(--secondary-blue);
+    color: #1565c0;
+}
+
+.toast-info .toast-close {
+    color: #90caf9;
+}
+
+@media (max-width: 480px) {
+    #toast-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+
+    .toast {
+        min-width: auto;
+        max-width: none;
+    }
+}
+
+/* ─────────────────────────────────────────── */
+/* Shake Animation                             */
+/* ─────────────────────────────────────────── */
+
+.shake {
+    animation: shake 0.4s ease !important;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-8px);
+    }
+    20%, 40%, 60%, 80% {
+        transform: translateX(8px);
+    }
+}

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriAI - Farmer Login</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ─── Login Container ─── -->
+<div class="login-container">
+    <!-- Left Side - Branding (Desktop Only) -->
+    <div class="login-brand-section">
+        <div class="brand-content">
+            <div class="brand-logo">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h1>Agri<span class="highlight">AI</span></h1>
+            <p class="brand-tagline">AI-Powered Agricultural Decision Support</p>
+            
+            <div class="brand-features">
+                <div class="feature">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Real-time Weather</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-water"></i>
+                    <span>Soil Monitoring</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Market Analysis</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Smart Recommendations</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Side - Login Form -->
+    <div class="login-form-section">
+        <div class="login-form-container">
+            <!-- Logo for Mobile -->
+            <div class="mobile-logo">
+                <i class="fas fa-leaf"></i>
+                <span>AgriAI</span>
+            </div>
+
+            <h2>Welcome Farmer</h2>
+            <p class="login-subtitle">Enter your mobile number to get started</p>
+
+            <!-- Mobile Number Step -->
+            <div class="login-step" id="mobileStep">
+                <form id="mobileForm" class="login-form">
+                    <div class="form-group">
+                        <label for="mobileNumber">
+                            <i class="fas fa-phone"></i> Mobile Number
+                        </label>
+                        <div class="input-wrapper">
+                            <span class="country-code">+91</span>
+                            <input 
+                                type="tel" 
+                                id="mobileNumber" 
+                                placeholder="Enter 10-digit mobile number"
+                                maxlength="10"
+                                pattern="[0-9]{10}"
+                                required
+                            >
+                        </div>
+                        <small class="form-hint">We'll send you a 6-digit OTP on this number</small>
+                        <span class="form-error" id="mobileError"></span>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-login" id="sendOtpBtn">
+                        <span>Send OTP</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- Farmer Info Card -->
+                <div class="info-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <p><strong>Your data is secure.</strong> We only use your number to send OTP and never share it with third parties.</p>
+                </div>
+            </div>
+
+            <!-- OTP Verification Step -->
+            <div class="login-step" id="otpStep" style="display: none;">
+                <form id="otpForm" class="login-form">
+                    <!-- Phone Number Display -->
+                    <div class="verification-header">
+                        <p>Verification code sent to</p>
+                        <div class="phone-display">
+                            <i class="fas fa-phone"></i>
+                            <span id="displayPhone">+91 XXXXXXXXXX</span>
+                            <button type="button" class="btn-link" id="changePhoneBtn">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- OTP Input -->
+                    <div class="form-group">
+                        <label for="otpInput">
+                            <i class="fas fa-key"></i> Enter OTP
+                        </label>
+                        <div class="otp-input-container">
+                            <input 
+                                type="text" 
+                                id="otpInput" 
+                                class="otp-input" 
+                                placeholder="000000"
+                                maxlength="6"
+                                pattern="[0-9]{6}"
+                                inputmode="numeric"
+                                autocomplete="one-time-code"
+                                required
+                            >
+                            <div class="otp-display" id="otpDisplay"></div>
+                        </div>
+                        <span class="form-error" id="otpError"></span>
+                    </div>
+
+                    <!-- Resend OTP -->
+                    <div class="otp-actions">
+                        <button type="submit" class="btn-primary btn-login" id="verifyOtpBtn">
+                            <span>Verify & Login</span>
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <p class="resend-info">
+                            Didn't receive code?
+                            <button type="button" class="btn-link" id="resendOtpBtn">
+                                Resend OTP
+                            </button>
+                            <span class="resend-timer" id="resendTimer"></span>
+                        </p>
+                    </div>
+                </form>
+
+                <!-- OTP Info Card -->
+                <div class="info-card">
+                    <i class="fas fa-info-circle"></i>
+                    <p>Enter the 6-digit OTP sent to your mobile number. Valid for <strong>10 minutes</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Demo Credentials Notice -->
+            <div class="demo-notice">
+                <i class="fas fa-graduation-cap"></i>
+                <p><strong>Demo Mode:</strong> Use mobile: 9876543210 and OTP: 123456</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ─── Toast Notification ─── -->
+<div id="toast-container"></div>
+
+<!-- ─── Scripts ─── -->
+<script src="js/config.js"></script>
+<script src="js/api-key-manager.js"></script>
+<script src="js/load-env.js"></script>
+<script src="js/utils/notification-helpers.js"></script>
+<script src="js/utils/otp-manager.js"></script>
+<script src="js/pages/login.js"></script>
+
+</body>
+</html>

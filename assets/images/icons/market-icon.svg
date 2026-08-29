@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Market/Chart Icon -->
+  <path d="M3 3v16c0 1.1.9 2 2 2h16" stroke="#1565C0" stroke-width="2" fill="none"/>
+  
+  <!-- Growth lines -->
+  <path d="M5 15l3-3 3 3 4-5 3 2 2-3" 
+    stroke="#2E7D32" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+  
+  <!-- Positive trend area -->
+  <path d="M5 15l3-3 3 3 4-5 3 2 2-3V19H5z" 
+    stroke="#2E7D32" stroke-width="1" fill="rgba(46,125,50,0.1)"/>
+  
+  <!-- Points -->
+  <circle cx="8" cy="12" r="3" stroke="#2E7D32" stroke-width="2" fill="rgba(46,125,50,0.2)"/>
+  <circle cx="14" cy="7" r="3" stroke="#1565C0" stroke-width="2" fill="rgba(21,101,192,0.2)"/>
+  <circle cx="19" cy="8" r="3" stroke="#F57C00" stroke-width="2" fill="rgba(245,124,0,0.2)"/>
+  
+  <!-- Dollar sign -->
+  <text x="16" y="3" font-size="8" fill="#F57C00" font-weight="bold">$</text>
+  
+  <!-- Up arrow -->
+  <path d="M11 21l2-2 2 2" stroke="#2E7D32" stroke-width="1.5" fill="none"/>
+</svg>

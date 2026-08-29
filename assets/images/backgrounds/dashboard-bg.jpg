@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <!-- Dashboard Background - Subtle Pattern -->
+  
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F5F9FF;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#E8F5E9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F5F5F5;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Grid Pattern -->
+    <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2E7D32" stroke-width="0.5" opacity="0.05"/>
+    </pattern>
+    
+    <!-- Dot Pattern -->
+    <pattern id="dotPattern" width="60" height="60" patternUnits="userSpaceOnUse">
+      <circle cx="30" cy="30" r="2" fill="#2E7D32" opacity="0.08"/>
+      <circle cx="0" cy="0" r="2" fill="#2E7D32" opacity="0.08"/>
+    </pattern>
+    
+    <!-- Diagonal Lines Pattern -->
+    <pattern id="diagonalPattern" width="50" height="50" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="50" stroke="#1565C0" stroke-width="0.5" opacity="0.05"/>
+    </pattern>
+    
+    <!-- Leaf Pattern -->
+    <pattern id="leafPattern" width="100" height="100" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+      <path d="M50 30 Q60 45 50 60 Q40 45 50 30Z" fill="#2E7D32" opacity="0.03"/>
+      <path d="M50 30 L50 60" stroke="#2E7D32" stroke-width="0.5" opacity="0.05"/>
+    </pattern>
+  </defs>
+  
+  <!-- Base Background -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#bgGradient)"/>
+  
+  <!-- Grid Pattern Overlay -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#gridPattern)"/>
+  
+  <!-- Dot Pattern Overlay -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#dotPattern)"/>
+  
+  <!-- Diagonal Pattern Overlay -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#diagonalPattern)"/>
+  
+  <!-- Leaf Pattern Overlay -->
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#leafPattern)"/>
+  
+  <!-- Decorative Circles - Top Left -->
+  <circle cx="150" cy="150" r="300" fill="none" stroke="#2E7D32" stroke-width="1" opacity="0.05"/>
+  <circle cx="150" cy="150" r="250" fill="none" stroke="#2E7D32" stroke-width="0.5" opacity="0.08"/>
+  <circle cx="150" cy="150" r="200" fill="none" stroke="#2E7D32" stroke-width="0.5" opacity="0.06"/>
+  
+  <!-- Decorative Circles - Bottom Right -->
+  <circle cx="1800" cy="950" r="350" fill="none" stroke="#1565C0" stroke-width="1" opacity="0.04"/>
+  <circle cx="1800" cy="950" r="280" fill="none" stroke="#1565C0" stroke-width="0.5" opacity="0.06"/>
+  <circle cx="1800" cy="950" r="210" fill="none" stroke="#1565C0" stroke-width="0.5" opacity="0.05"/>
+  
+  <!-- Decorative Leaf Silhouette - Top Right -->
+  <g transform="translate(1700, 150) rotate(20)" opacity="0.06">
+    <path d="M50 0 Q80 30 50 80 Q20 30 50 0Z" fill="#2E7D32"/>
+    <path d="M50 0 L50 80" stroke="#2E7D32" stroke-width="1"/>
+    <path d="M30 20 Q40 25 50 20" stroke="#2E7D32" stroke-width="0.5" fill="none"/>
+    <path d="M30 40 Q40 45 50 40" stroke="#2E7D32" stroke-width="0.5" fill="none"/>
+    <path d="M30 60 Q40 65 50 60" stroke="#2E7D32" stroke-width="0.5" fill="none"/>
+  </g>
+  
+  <!-- Decorative Crop Icon - Bottom Left -->
+  <g transform="translate(100, 900)" opacity="0.05">
+    <line x1="40" y1="0" x2="40" y2="30" stroke="#2E7D32" stroke-width="2"/>
+    <line x1="20" y1="15" x2="60" y2="15" stroke="#2E7D32" stroke-width="2"/>
+    <line x1="10" y1="25" x2="70" y2="25" stroke="#2E7D32" stroke-width="2"/>
+    <line x1="0" y1="35" x2="80" y2="35" stroke="#2E7D32" stroke-width="2"/>
+  </g>
+  
+  <!-- Subtle Gradient Overlay from Top -->
+  <linearGradient id="topOverlay" x1="0%" y1="0%" x2="0%" y2="100%">
+    <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.3"/>
+    <stop offset="100%" style="stop-color:transparent;stop-opacity:0"/>
+  </linearGradient>
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#topOverlay)"/>
+  
+  <!-- Subtle Gradient Overlay from Bottom -->
+  <linearGradient id="bottomOverlay" x1="0%" y1="100%" x2="0%" y2="0%">
+    <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:0.2"/>
+    <stop offset="100%" style="stop-color:transparent;stop-opacity:0"/>
+  </linearGradient>
+  <rect x="0" y="0" width="1920" height="1080" fill="url(#bottomOverlay)"/>
+  
+  <!-- Dashboard Corner Decorations -->
+  <!-- Top Left Corner -->
+  <path d="M20 0 L0 0 L0 20" stroke="#2E7D32" stroke-width="2" fill="none" opacity="0.2"/>
+  <path d="M40 0 L0 0 L0 40" stroke="#2E7D32" stroke-width="1" fill="none" opacity="0.1"/>
+  
+  <!-- Top Right Corner -->
+  <path d="M1900 0 L1920 0 L1920 20" stroke="#2E7D32" stroke-width="2" fill="none" opacity="0.2"/>
+  <path d="M1880 0 L1920 0 L1920 40" stroke="#2E7D32" stroke-width="1" fill="none" opacity="0.1"/>
+  
+  <!-- Bottom Left Corner -->
+  <path d="M20 1080 L0 1080 L0 1060" stroke="#2E7D32" stroke-width="2" fill="none" opacity="0.2"/>
+  <path d="M40 1080 L0 1080 L0 1040" stroke="#2E7D32" stroke-width="1" fill="none" opacity="0.1"/>
+  
+  <!-- Bottom Right Corner -->
+  <path d="M1900 1080 L1920 1080 L1920 1060" stroke="#2E7D32" stroke-width="2" fill="none" opacity="0.2"/>
+  <path d="M1880 1080 L1920 1080 L1920 1040" stroke="#2E7D32" stroke-width="1" fill="none" opacity="0.1"/>
+  
+  <!-- Center Decorative Element -->
+  <g transform="translate(960, 540)" opacity="0.03">
+    <circle cx="0" cy="0" r="200" fill="none" stroke="#2E7D32" stroke-width="1"/>
+    <circle cx="0" cy="0" r="150" fill="none" stroke="#2E7D32" stroke-width="0.5"/>
+    <circle cx="0" cy="0" r="100" fill="none" stroke="#2E7D32" stroke-width="0.5"/>
+    <line x1="-200" y1="0" x2="200" y2="0" stroke="#2E7D32" stroke-width="0.5"/>
+    <line x1="0" y1="-200" x2="0" y2="200" stroke="#2E7D32" stroke-width="0.5"/>
+    <line x1="-141" y1="-141" x2="141" y2="141" stroke="#2E7D32" stroke-width="0.5"/>
+    <line x1="141" y1="-141" x2="-141" y2="141" stroke="#2E7D32" stroke-width="0.5"/>
+  </g>
+  
+  <!-- Statistical Decorative Bars - Left Side -->
+  <g opacity="0.04">
+    <rect x="100" y="400" width="3" height="60" fill="#2E7D32" rx="1.5"/>
+    <rect x="110" y="380" width="3" height="80" fill="#2E7D32" rx="1.5"/>
+    <rect x="120" y="420" width="3" height="40" fill="#2E7D32" rx="1.5"/>
+    <rect x="130" y="350" width="3" height="110" fill="#2E7D32" rx="1.5"/>
+    <rect x="140" y="390" width="3" height="70" fill="#2E7D32" rx="1.5"/>
+    <rect x="150" y="410" width="3" height="50" fill="#2E7D32" rx="1.5"/>
+    <rect x="160" y="370" width="3" height="90" fill="#2E7D32" rx="1.5"/>
+  </g>
+  
+  <!-- Statistical Decorative Bars - Right Side -->
+  <g opacity="0.04">
+    <rect x="1760" y="350" width="3" height="110" fill="#1565C0" rx="1.5"/>
+    <rect x="1770" y="390" width="3" height="70" fill="#1565C0" rx="1.5"/>
+    <rect x="1780" y="410" width="3" height="50" fill="#1565C0" rx="1.5"/>
+    <rect x="1790" y="370" width="3" height="90" fill="#1565C0" rx="1.5"/>
+    <rect x="1800" y="400" width="3" height="60" fill="#1565C0" rx="1.5"/>
+    <rect x="1810" y="380" width="3" height="80" fill="#1565C0" rx="1.5"/>
+    <rect x="1820" y="420" width="3" height="40" fill="#1565C0" rx="1.5"/>
+  </g>
+</svg>

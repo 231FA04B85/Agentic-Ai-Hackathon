@@ -1,0 +1,61 @@
+# Environment and Configuration Files
+.env
+.env.local
+.env.*.local
+config.local.js
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node modules (if using npm)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build and Distribution
+dist/
+build/
+*.log
+
+# API Keys and Secrets (CRITICAL!)
+# Never commit actual API keys!
+api-keys.json
+secrets.json
+.credentials
+
+# Temporary Files
+*.tmp
+.cache/
+
+# OS Specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Browser
+.browserslistrc
+
+# Testing
+coverage/
+.nyc_output/
+
+# Debug
+debug/
+logs/
+
+# Do NOT add these files to git:
+# - Files containing API keys
+# - Database credentials
+# - User-specific settings
+# - Local development configurations
+
+# If you accidentally committed a file with API keys:
+# 1. Remove it from git history: git rm --cached filename
+# 2. Add to .gitignore
+# 3. Regenerate any exposed API keys
+# 4. Force push: git push origin branch-name --force-with-lease
